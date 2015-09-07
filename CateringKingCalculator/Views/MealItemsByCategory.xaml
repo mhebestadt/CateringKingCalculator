@@ -1,0 +1,120 @@
+﻿<Page
+    x:Class="CateringKingCalculator.Views.MealItemsByCategory"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CateringKingCalculator.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.BottomAppBar>
+        <AppBar 
+            x:Name="MealItemsPageAppBar"
+            Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
+            IsOpen="True"
+            IsSticky="True">
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Left" 
+                        VerticalAlignment="Top">
+                <AppBarButton 
+                    x:Name="NavigateBackButton"
+                    Style="{StaticResource BackButtonStyle}" Width="72" Height="57"
+                    Click="NavigateBackButton_Click"
+                    HorizontalAlignment="Left" 
+                    Icon="Accept" 
+                    Label="appbarbutton" 
+                    Margin="30,0,0,0"/>
+                <AppBarButton
+                    x:Name="SaveButton"
+                    Style="{StaticResource SaveButtonStyle}" Width="72" Height="57"
+                    Click="SaveButton_Click"
+                    HorizontalAlignment="Left" 
+                    Icon="Accept" 
+                    Label="appbarbutton" 
+                    Margin="50,0,0,0"/>
+                <AppBarButton 
+                    x:Name="EditButton"
+                    Style="{StaticResource EditButtonStyle}" Width="72" Height="57"
+                    Click="EditButton_Click"
+                    HorizontalAlignment="Left" 
+                    Icon="Accept" 
+                    Label="appbarbutton" 
+                    Margin="60,0,0,0"/>
+                <AppBarButton 
+                    x:Name="AddMealItemButton"
+                    Style="{StaticResource AddItemButtonStyle}" Width="72" Height="57"
+                    Click="AddMealItemButton_Click"
+                    HorizontalAlignment="Left" 
+                    Icon="Accept" 
+                    Label="appbarbutton" 
+                    Margin="60,0,0,0"/>
+            </StackPanel>
+        </AppBar>
+    </Page.BottomAppBar>
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <CollectionViewSource x:Name="FoodCategoriesViewSource"/>
+            <CollectionViewSource x:Name="MealItemsViewSource"/>
+            
+            <DataTemplate x:Key="FoodCategoriesViewTemplate">
+                <Grid>
+                    <Ellipse x:Name="Ellipse"
+                         Grid.RowSpan="1"
+                         Width ="32"
+                         Height="32"
+                         Margin="6"
+                         VerticalAlignment="Center"
+                         HorizontalAlignment="Center"
+                         Fill="LightGray"/>
+                    <TextBlock Grid.Column="1"
+                                Text="{Binding Name}"
+                                Margin="12,6,0,0"
+                                FontSize="18"
+                                FontWeight="SemiBold"/>
+                </Grid>
+            </DataTemplate>
+            <DataTemplate x:Key="ListItemsViewTemplate">
+                <Grid>
+                    <TextBlock Grid.Column="1"
+                                Text="{Binding Name}"
+                                Margin="12,6,0,0"
+                                FontSize="18"
+                                FontWeight="SemiBold"/>
+                </Grid>
+            </DataTemplate>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource AppBarItemPointerOverBackgroundThemeBrush}">
+
+        <Border Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
+            <TextBlock Text="Kategorie" Margin="20,10,50,1"
+                           Style="{ThemeResource TitleTextBlockStyle}" />
+        </Border>
+        
+
+        <ListView 
+            x:Name="FoodCategoriesListView"
+            ItemsSource="{Binding Mode=OneWay, Source={StaticResource FoodCategoriesViewSource}}"
+            ItemTemplate="{StaticResource FoodCategoriesViewTemplate}"
+            SelectionChanged="FoodCategoriesListView_SelectionChanged"
+            HorizontalAlignment="Left" 
+            Height="718" 
+            Margin="10,50,0,0" 
+            VerticalAlignment="Top" 
+            Width="305" Background="White"/>
+        <ListView 
+            x:Name="MealItemsListView"
+            ItemsSource="{Binding Mode=OneWay, Source={StaticResource MealItemsViewSource}}"
+            ItemTemplate="{StaticResource ListItemsViewTemplate}"
+            SelectionChanged="MealItemsListView_SelectionChanged"
+            SelectionMode="Multiple"
+            HorizontalAlignment="Right" 
+            Height="718" 
+            Margin="10,50,-10,0" 
+            VerticalAlignment="Top" 
+            Width="856" Background="White"/>
+
+    </Grid>
+</Page>
