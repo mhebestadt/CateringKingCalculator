@@ -1,6 +1,7 @@
 ﻿using hebestadt.CateringKingCalculator;
 using hebestadt.CateringKingCalculator.Models;
 using hebestadtaCateringKingCalculator;
+using System;
 using System.Linq;
 
 namespace CateringKingCalculator.ViewModels
@@ -77,12 +78,19 @@ namespace CateringKingCalculator.ViewModels
             var unitOfMeasure = new UnitOfMeasureViewModel();
             using (var db = new SQLite.SQLiteConnection(App.DBPath))
             {
-                var _uom = (db.Table<UnitOfMeasure>().Where(c => c.Id == uomId)).Single();
-                unitOfMeasure.Id = _uom.Id;
-                unitOfMeasure.UnitName = _uom.UnitName;
-                unitOfMeasure.Abbreviation = _uom.Abbreviation;
+                try
+                {
+                    var _uom = (db.Table<UnitOfMeasure>().Where(c => c.Id == uomId)).Single();
+                    unitOfMeasure.Id = _uom.Id;
+                    unitOfMeasure.UnitName = _uom.UnitName;
+                    unitOfMeasure.Abbreviation = _uom.Abbreviation;
+                }
+                catch (Exception e)
+                {
+                    string errMessage = e.Message;
+                }
+                
             }
-
             return unitOfMeasure;
         }
     }
