@@ -1,0 +1,41 @@
+ DatentrÑger in Laufwerk H: ist Seagate Expansion Drive
+ Volumeseriennummer: A66C-77BB
+
+ Verzeichnis von H:\catering\Kopie
+
+13.08.2015  18:19    <DIR>          .
+13.08.2015  18:19    <DIR>          ..
+17.07.2015  14:19            14.836 Antipasti.docx
+08.07.2015  16:48            14.734 Asiatisch.docx
+25.06.2015  08:44            15.526 CanapÇs  Brîtchen Snacks.docx
+20.07.2015  12:29            22.821 Dessert.docx
+08.07.2015  16:53            17.885 Dips uns Butterteller.docx
+25.07.2015  19:01            19.631 GemÅsebeilagen.docx
+25.06.2015  13:42            14.684 Griechisch.docx
+17.07.2015  13:02            14.873 Grillbuffet Extra.docx
+17.07.2015  11:57            18.427 Grillbuffet mit Anti-Pasti 139 Personen.docx
+23.07.2015  13:14            20.339 Italienisch.docx
+25.06.2015  08:58            14.440 Kalte  Fleischplatten.docx
+25.06.2015  13:37            16.088 Mexikanisch.docx
+25.06.2015  09:23            14.079 Mitternachtssnacks.docx
+16.07.2015  14:07            17.414 Party Snacks.docx
+07.06.2015  11:39            13.232 PfannengemÅse.docx
+20.07.2015  13:52            20.869 Salate (2).docx
+05.08.2015  15:53            16.192 Salate.docx
+08.07.2015  16:16            17.581 Saucen.docx
+13.07.2015  15:00            15.102 Schnitzelparade 100 Personen.docx
+25.06.2015  14:12            14.195 Spanisch.docx
+25.07.2015  08:43            19.676 Suppen.docx
+25.07.2015  09:24            15.261 SuppengemÅse.docx
+25.06.2015  13:07            15.756 SÑttigungsbeilagen.docx
+17.06.2015  14:24            17.807 Vip Grillbuffet.docx
+25.07.2015  11:52            17.295 Vom GeflÅgel.docx
+08.07.2015  16:47            14.598 Vom Lamm und Fisch.docx
+25.07.2015  18:59            16.051 Vom Rind.docx
+25.07.2015  11:56            19.182 Vom Schwein.docx
+25.06.2015  11:52            14.340 Vom Wild.docx
+25.06.2015  08:36            16.405 Vorspeisen.docx
+28.06.2015  09:50            14.579 WestfÑlisches Grillbuffet  Erwachsene  100 Personen.docx
+07.07.2015  11:40            14.207 WestfÑlisches Grillbuffet  Erwachsene 80 Personen.docx
+              32 Datei(en),        528.105 Bytes
+               2 Verzeichnis(se), 626.207.010.816 Bytes frei
