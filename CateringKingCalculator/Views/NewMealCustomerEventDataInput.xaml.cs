@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -22,9 +23,13 @@ namespace CateringKingCalculator.Views
     /// </summary>
     public sealed partial class NewMealCustomerEventDataInput : Page
     {
+        static readonly ObservableCollection<string> _attention = new ObservableCollection<string>() { "Frau", "Herr", "Firma" };
+
         public NewMealCustomerEventDataInput()
         {
             this.InitializeComponent();
+
+            AttentionTextBox.ItemsSource = _attention;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
