@@ -65,8 +65,7 @@
         <ResourceDictionary>
             <CollectionViewSource x:Name="IngredientsViewSource" />
             <CollectionViewSource x:Name="SelectedIngredientsViewSource" />
-            <converters:IntToStringConverter x:Key="IntToStringConverter"/>
-
+            
             <DataTemplate x:Key="NavLinkItemTemplate">
                 <StackPanel Orientation="Horizontal"  Margin="2,0,0,0">
                 </StackPanel>
