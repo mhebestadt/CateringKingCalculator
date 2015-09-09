@@ -216,11 +216,18 @@ namespace CateringKingCalculator.Views
             if ((args.Reason == AutoSuggestionBoxTextChangeReason.UserInput) && (sender.Text != ""))
             {
                 ContactViewModel contactViewModel = new ContactViewModel();
-                ObservableCollection<ContactViewModel> matchingContacts = contactViewModel.GetMatchingContacts(sender.Text);
+                //ObservableCollection<ContactViewModel> matchingContacts = contactViewModel.GetMatchingContacts(sender.Text);
+                ObservableCollection<string> matchingContacts = contactViewModel.GetMatchingContacts(sender.Text);
                 sender.ItemsSource = matchingContacts;
-                //var matchingContacts = contactViewModel.GetMatchingContacts(sender.Text);
+            }
+        }
 
-                //sender.ItemsSource = matchingContacts.ToList();
+        private void ContactNameTextBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            if (args.ChosenSuggestion != null)
+            {
+                //User selected an item, take an action on it here
+                var test = args.ChosenSuggestion;
             }
         }
     }
