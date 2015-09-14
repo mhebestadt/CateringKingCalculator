@@ -24,12 +24,15 @@ namespace CateringKingCalculator.Views
     public sealed partial class NewMealCustomerEventDataInput : Page
     {
         static readonly ObservableCollection<string> _attention = new ObservableCollection<string>() { "Frau", "Herr", "Firma" };
+        static readonly ObservableCollection<string> _contactPerson =
+            new ObservableCollection<string>() { "Karina Helmert", "Sigrid Kluge" };
 
         public NewMealCustomerEventDataInput()
         {
             this.InitializeComponent();
 
             AttentionTextBox.ItemsSource = _attention;
+            ContactTextBox.ItemsSource = _contactPerson;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -38,6 +41,26 @@ namespace CateringKingCalculator.Views
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DeliveryTimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
+        {
+
+        }
+
+        private void DeliveryDatePicker_DateChanged(object sender, DatePickerValueChangedEventArgs e)
+        {
+
+        }
+
+        private void PickupDatePicker_DateChanged(object sender, DatePickerValueChangedEventArgs e)
+        {
+
+        }
+
+        private void PickupTimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
         {
 
         }

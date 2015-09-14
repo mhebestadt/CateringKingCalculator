@@ -69,7 +69,7 @@
                      Margin="123,7,0,0" 
                      VerticalAlignment="Top"
                      Width="300"/>
-            <TextBlock x:Name="textBlock" 
+            <TextBlock x:Name="CellNoTextBlock" 
                        HorizontalAlignment="Left" 
                        Margin="123,15,0,0" 
                        Text="MobilNr."
@@ -82,20 +82,20 @@
                      Width="300"/>
         </StackPanel>
         <StackPanel x:Name="StackPanelEventData"
-                    Orientation="Vertical" Margin="450,0,0,0">
+                    Orientation="Vertical" Margin="420,0,0,0">
             <TextBlock x:Name="EventDataTextBlock" 
                        HorizontalAlignment="Left" 
                        Margin="123,70,0,0" 
                        Text="Veranstaltungsdaten" 
                        VerticalAlignment="Top" 
-                       Height="27" 
+                       Height="30" 
                        Width="210" 
                        FontWeight="Bold"
                        FontSize="21.333"
                        Foreground="#FFFBFBFB"/>
             <TextBlock x:Name="EventLocationTextBlock" 
                        HorizontalAlignment="Left" 
-                       Margin="123,27,0,0" 
+                       Margin="123,20,0,0" 
                        Text="Veranstaltungsort" 
                        VerticalAlignment="Top" 
                        Width="149"/>
@@ -107,6 +107,54 @@
                      VerticalAlignment="Top"
                      Width="300"
                      Height="140"/>
+            <DatePicker x:Name="DeliveryDatePicker" 
+                    Header="Lieferdatum"
+                    DateChanged="DeliveryDatePicker_DateChanged"
+                    HorizontalAlignment="Left"
+                    Margin="123,27,0,0"
+                    Height="60" 
+                    VerticalAlignment="Top" 
+                    Width="150"/>
+            <TimePicker x:Name="DeliveryTimePicker"
+                    Header="Lieferzeit"
+                    TimeChanged="DeliveryTimePicker_TimeChanged"
+                    HorizontalAlignment="Left"
+                    ClockIdentifier="24HourClock"
+                    Language="de"
+                    Margin="123,27,0,0"
+                    Height="60" 
+                    VerticalAlignment="Top" 
+                    Width="20"/>
+            <TextBlock x:Name="ContactTextBlock" 
+                       HorizontalAlignment="Left" 
+                       Margin="123,27,0,0" 
+                       Text="Ansprechpartner" 
+                       VerticalAlignment="Top" 
+                       Width="149"/>
+            <ComboBox x:Name="ContactTextBox"
+                     Width="300" 
+            	     Margin="124,15,0,0"/>
+        </StackPanel>
+        <StackPanel x:Name="StackPanelEventDataExt"
+                    Orientation="Vertical" Margin="800,105,0,0">
+            <DatePicker x:Name="PickupDatePicker" 
+                    Header="Abholdatumdatum"
+                    DateChanged="PickupDatePicker_DateChanged"
+                    HorizontalAlignment="Left"
+                    Margin="123,20,0,0"
+                    Height="60" 
+                    VerticalAlignment="Top" 
+                    Width="150"/>
+            <TimePicker x:Name="PickupTimePicker"
+                    Header="Abholzeit"
+                    TimeChanged="PickupTimePicker_TimeChanged"
+                    HorizontalAlignment="Left"
+                    ClockIdentifier="24HourClock"
+                    Language="de"
+                    Margin="123,27,0,0"
+                    Height="60" 
+                    VerticalAlignment="Top" 
+                    Width="20"/>
         </StackPanel>
     </Grid>
 </Page>
