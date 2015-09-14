@@ -180,38 +180,35 @@ namespace CateringKingCalculator.ViewModels
 
         #endregion "Properties"
 
-        public ObservableCollection<ContactViewModel> GetMatchingContacts(string query)
+        //public ObservableCollection<ContactViewModel> GetMatchingContacts(string query)
+        public ObservableCollection<string> GetMatchingContacts(string query)
         {
-            var contacts = new ObservableCollection<ContactViewModel>();
-            ContactViewModel cont1 = new ContactViewModel();
-            cont1.LastName = "Last Name 1";
-            contacts.Add(cont1);
+            //var contacts = new ObservableCollection<ContactViewModel>();
+            var contacts = new ObservableCollection<string>();
 
-            ContactViewModel cont2 = new ContactViewModel();
-            cont2.LastName = "Last Name 1";
-            contacts.Add(cont2);
-
-            /*using (var db = new SQLite.SQLiteConnection(App.DBPath))
+            using (var db = new SQLite.SQLiteConnection(App.DBPath))
             {
                 var conts = db.Table<Contact>()
-                    .Where(c => c.FirstName.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) > -1 ||
-                                c.LastName.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) > -1 ||
-                                c.Company.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) > -1);
+                    .Where(c => c.FirstName.Contains(query) ||
+                                c.LastName.Contains(query) ||
+                                c.Company.Contains(query));
 
-                foreach(var cont in conts )
+                if (conts.Count() > 0)
                 {
-                    int c = 11;
-                    string lastname = cont.LastName;
+                    foreach (var cont in conts)
+                    {
+                        contacts.Add(cont.LastName);
+                    }
                 }
 
-                db.Table<Contact>()
+                /*db.Table<Contact>()
                     .Where(c => c.FirstName.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) > -1 ||
                                 c.LastName.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) > -1 ||
                                 c.Company.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) > -1)
                                 .OrderByDescending(c => c.FirstName.StartsWith(query, StringComparison.CurrentCultureIgnoreCase))
                                 .ThenByDescending(c => c.LastName.StartsWith(query, StringComparison.CurrentCultureIgnoreCase))
-                                .ThenByDescending(c => c.Company.StartsWith(query, StringComparison.CurrentCultureIgnoreCase));
-            }*/
+                                .ThenByDescending(c => c.Company.StartsWith(query, StringComparison.CurrentCultureIgnoreCase));*/
+            }
 
             return contacts;
         }
