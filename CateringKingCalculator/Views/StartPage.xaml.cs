@@ -34,7 +34,8 @@ namespace CateringKingCalculator.Views
         private void MealsAdd_AppBarButton_Click(object sender, RoutedEventArgs e)
         {
             var newMeal = new MealViewModel();
-            this.Frame.Navigate(typeof(MealItems), newMeal);
+            //this.Frame.Navigate(typeof(MealItems), newMeal);
+            this.Frame.Navigate(typeof(NewMealCustomerEventDataInput), newMeal);
         }
     }
 }
