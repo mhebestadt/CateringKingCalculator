@@ -25,9 +25,11 @@ namespace CateringKingCalculator.Views
         MealItemsViewModel mealItemsViewModel = null;
         MealItemViewModel currentSelectedMealItem = null;
         ObservableCollection<MealItemViewModel> _mealItems = null;
-        MealViewModel meal = null;
+        MealViewModel _meal = null;
         IngredientsViewModel ingredientsViewModel = null;
         ListView listViewIngredientsDetail = new ListView();
+        ContactViewModel _contact = null;
+        string _numberOfGuests = "";
 
         public MealItems()
         {
@@ -42,41 +44,40 @@ namespace CateringKingCalculator.Views
 
             if (e.Parameter != null)
             {
-                meal = (MealViewModel)e.Parameter;
-                Dictionary<float, float> mealItemIDsWithWeight = meal.mealItemIDsWithWeight;
-
+                /* This section adds dynamic list view - it will be removed at some point */
                 ListViewStackPanel.Children.Add(listViewIngredientsDetail);
                 listViewIngredientsDetail.SelectionChanged += ListView_SelectionChanged;
-
                 Thickness margin = listViewIngredientsDetail.Margin;
                 margin.Bottom = 0;
                 margin.Left = 380;
                 margin.Right = 100;
                 margin.Top = 100;
                 listViewIngredientsDetail.Margin = margin;
+                /*-----------------------------------------------------------------------*/
+
+                _meal = (MealViewModel)e.Parameter;
                 mealItemsViewModel = new MealItemsViewModel();
-                _mealItems = mealItemsViewModel.GetMealItems(mealItemIDsWithWeight);
+                _mealItems = mealItemsViewModel.GetMealItems(_meal.mealItemIDsWithWeight);
 
-                MealItemsGridView.ItemsSource = _mealItems;               
+                MealItemsGridView.ItemsSource = _mealItems;
 
-                if (meal.Name == "")
-                {
-                    SaveButton.IsEnabled = false;
-                }
-                else { ContactNameTextBox.Text = meal.Name; }
+                _contact = new ContactViewModel();
+                _contact = _contact.GetContact(_meal.ContactId);
+                ContactNameTextBox.Text = _contact.NameAndAddress;
+
+                this.DataContext = _meal;
                 
-                this.DataContext = meal;
-                
-                NumberOfGuestsTextBox.Text = meal.NumberOfGuests.ToString();
-                DeliveryDatePicker.Date = meal.DeliveryDate;
-                DeliveryTimePicker.Time = meal.DeliveryTime;
-                DeliveryNoteIdTextBox.Text = meal.DeliveryNoteId;
+                NumberOfGuestsTextBox.Text = _meal.NumberOfGuests.ToString();
+                _numberOfGuests = _meal.NumberOfGuests.ToString();
+                DeliveryDatePicker.Date = _meal.DeliveryDate;
+                DeliveryTimePicker.Time = _meal.DeliveryTime;
+                DeliveryNoteIdTextBox.Text = _meal.DeliveryNoteId;
             }
         }
 
         private void AddItemButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(MealItemsByCategory), meal);
+            this.Frame.Navigate(typeof(MealItemsByCategory), _meal);
         }
 
         private void NavigateBackButton_Click(object sender, RoutedEventArgs e)
@@ -86,7 +87,7 @@ namespace CateringKingCalculator.Views
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            string result = meal.DeleteMeal(meal.Id);
+            string result = _meal.DeleteMeal(_meal.Id);
 
             if (string.CompareOrdinal("Success", result) == 0)
             {
@@ -96,7 +97,7 @@ namespace CateringKingCalculator.Views
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            string result = meal.SaveMeal(meal);
+            string result = _meal.SaveMeal(_meal);
 
             if (string.CompareOrdinal("Success", result) == 0)
             {
@@ -108,7 +109,7 @@ namespace CateringKingCalculator.Views
         {
             MealItemViewModel mealItem = null;
             mealItem = (MealItemViewModel)MealItemsGridView.SelectedItem;
-            string result = meal.RemoveMealItem(meal, mealItem.Id);
+            string result = _meal.RemoveMealItem(_meal, mealItem.Id);
 
             if (string.CompareOrdinal("Success", result) == 0)
             {
@@ -164,22 +165,47 @@ namespace CateringKingCalculator.Views
                 if (WeightTextBox.Text != "" || int.TryParse(WeightTextBox.Text, out value) || WeightTextBox.Text == ",")
                 {
                     string str = WeightTextBox.Text.Replace(',', '.');
-                    this.meal.mealItemIDsWithWeight[currentSelectedMealItem.Id] =
+                    this._meal.mealItemIDsWithWeight[currentSelectedMealItem.Id] =
                         float.Parse(str, CultureInfo.InvariantCulture.NumberFormat);                 
                 }
             }
         }
 
+        private void NumberOfGuestsTextBox_KeyUp(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+            if ((e.Key == Windows.System.VirtualKey.Enter) && (currentSelectedMealItem != null))
+            {
+                int oldNumberOfGuests = Int32.Parse(_numberOfGuests);
+                int newNumberOfGuests = Int32.Parse(NumberOfGuestsTextBox.Text);
+                float mealItemTotalWeight = float.Parse(WeightTextBox.Text, CultureInfo.InvariantCulture.NumberFormat);
+                float mealItemNewWeight = (mealItemTotalWeight / oldNumberOfGuests) * newNumberOfGuests;
+                WeightTextBox.Text = mealItemNewWeight.ToString().Replace('.', ',');
+            }
+        }
+
         private void MealItemsGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            currentSelectedMealItem =  (MealItemViewModel)e.ClickedItem;
+            currentSelectedMealItem = (MealItemViewModel)e.ClickedItem;
             WeightTextBlock.Visibility = Visibility.Visible;
             WeightTextBox.Visibility = Visibility.Visible;
 
             UnitOfMeasureViewModel unitOfMeasure = new UnitOfMeasureViewModel();
             string unitOfMeasureName = unitOfMeasure.GetUnitOfMeasure(currentSelectedMealItem.TotalAmountUnitOfMeasure).UnitName;
             WeightTextBlock.Text = "Menge in " + unitOfMeasureName;
-            string mealItemWeight = this.meal.mealItemIDsWithWeight[currentSelectedMealItem.Id].ToString();
+
+            string mealItemWeight = "";
+            if (_meal.mealItemIDsWithWeight[currentSelectedMealItem.Id] > 0)
+            {
+                mealItemWeight = this._meal.mealItemIDsWithWeight[currentSelectedMealItem.Id].ToString();
+            }
+            else
+            {
+                float mealItemWeightDefault = currentSelectedMealItem.TotalAmount;
+                int numberGuestes = Int32.Parse(NumberOfGuestsTextBox.Text);
+                float totalWeight = mealItemWeightDefault * numberGuestes;
+                mealItemWeight = totalWeight.ToString();
+            }
+
             WeightTextBox.Text = mealItemWeight.Replace('.', ',');
         }
 
@@ -187,7 +213,7 @@ namespace CateringKingCalculator.Views
         {
             if (e.NewDate >= DateTimeOffset.Now)
             {
-                meal.DeliveryDate = e.NewDate;
+                _meal.DeliveryDate = e.NewDate;
             }
         }
 
@@ -195,17 +221,17 @@ namespace CateringKingCalculator.Views
         {
 
             if (TimeSpan.Compare(e.NewTime, e.OldTime) != 0)
-                meal.DeliveryTime = e.NewTime;
+                _meal.DeliveryTime = e.NewTime;
         }
 
         private void DeliveryNoteButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(DeliveryNote), meal);
+            this.Frame.Navigate(typeof(DeliveryNote), _meal);
         }
 
         private void MenuButton2_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(MealItemsByCategory), meal);
+            this.Frame.Navigate(typeof(MealItemsByCategory), _meal);
         }
 
         private void ContactNameTextBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -229,6 +255,11 @@ namespace CateringKingCalculator.Views
                 //User selected an item, take an action on it here
                 var test = args.ChosenSuggestion;
             }
+        }
+
+        private void NumberOfGuestsTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            _numberOfGuests = NumberOfGuestsTextBox.Text;
         }
     }
 }
