@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace CateringKingCalculator.Views
 {
@@ -39,13 +38,6 @@ namespace CateringKingCalculator.Views
 
         private void SaveButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            /*
-            foreach (var mealItem in MealItemDetailListView.SelectedItems)
-            {
-                MealItemViewModel item = (MealItemViewModel)mealItem;
-                meal.AddMealItem(meal, item.Id);
-            }*/
-
             this.Frame.Navigate(typeof(MealItems), meal);
         }
     }

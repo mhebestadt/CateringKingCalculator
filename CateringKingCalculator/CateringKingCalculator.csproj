@@ -93,6 +93,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="db\meals.db" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -100,10 +101,12 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Comparerers\CategoryCompare.cs" />
+    <Compile Include="Converters\ContactIdToNameConverter.cs" />
     <Compile Include="Converters\DateTimeToStringConverter.cs" />
     <Compile Include="Converters\GenericDictionaryToByteArray.cs" />
     <Compile Include="Converters\GenericDictionaryToByteArrayFloat.cs" />
     <Compile Include="Converters\GenericListToByteArray.cs" />
+    <Compile Include="Converters\IntToStringConverter.cs" />
     <Compile Include="Converters\TimeSpanToStringConverter.cs" />
     <Compile Include="Extensions\ObservableCollectionExt.cs" />
     <Compile Include="Models\Contact.cs" />
@@ -144,6 +147,9 @@
     </Compile>
     <Compile Include="Views\MealItemsByCategory.xaml.cs">
       <DependentUpon>MealItemsByCategory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewMealCustomerEventDataInput.xaml.cs">
+      <DependentUpon>NewMealCustomerEventDataInput.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NewMealItem.xaml.cs">
       <DependentUpon>NewMealItem.xaml</DependentUpon>
@@ -227,6 +233,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MealItemsByCategory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewMealCustomerEventDataInput.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
