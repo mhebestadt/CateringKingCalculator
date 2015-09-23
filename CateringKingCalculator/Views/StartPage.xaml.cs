@@ -14,7 +14,6 @@ namespace CateringKingCalculator.Views
     public sealed partial class StartPage : Page
     {
         MealsViewModel mealsViewModel = null;
-        MealViewModel mealViewModel = null;
         ObservableCollection<MealViewModel> meals = null;
 
         public StartPage()
@@ -33,9 +32,7 @@ namespace CateringKingCalculator.Views
 
         private void MealsAdd_AppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            var newMeal = new MealViewModel();
-            //this.Frame.Navigate(typeof(MealItems), newMeal);
-            this.Frame.Navigate(typeof(NewMealCustomerEventDataInput), newMeal);
+            this.Frame.Navigate(typeof(NewMealCustomerEventDataInput), new MealViewModel());
         }
     }
 }
