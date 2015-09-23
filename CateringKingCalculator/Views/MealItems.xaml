@@ -165,6 +165,7 @@
                             x:Name="MenuButton3" 
                             FontFamily="Segoe MDL2 Assets" 
                             Content="&#xE1D6;"
+                            Click="MenuButton3_Click"
                             Width="50" 
                             Height="50" 
                             Background="Transparent"/>

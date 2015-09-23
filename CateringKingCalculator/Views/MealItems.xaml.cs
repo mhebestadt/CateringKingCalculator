@@ -12,6 +12,7 @@ using System.IO;
 using Windows.UI.Xaml.Documents;
 using CateringKingCalculator.ViewModels;
 using System.Linq;
+using Windows.UI.Popups;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -173,15 +174,83 @@ namespace CateringKingCalculator.Views
 
         private void NumberOfGuestsTextBox_KeyUp(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
-            if ((e.Key == Windows.System.VirtualKey.Enter) && (currentSelectedMealItem != null))
-            {
-                int oldNumberOfGuests = Int32.Parse(_numberOfGuests);
-                int newNumberOfGuests = Int32.Parse(NumberOfGuestsTextBox.Text);
-                float mealItemTotalWeight = float.Parse(WeightTextBox.Text, CultureInfo.InvariantCulture.NumberFormat);
-                float mealItemNewWeight = (mealItemTotalWeight / oldNumberOfGuests) * newNumberOfGuests;
-                WeightTextBox.Text = mealItemNewWeight.ToString().Replace('.', ',');
+            int oldNumberOfGuests = Int32.Parse(_numberOfGuests);
+            int newNumberOfGuests = 0; 
+            float mealItemTotalWeight = 0;
+
+            if(NumberOfGuestsTextBox.Text != "")
+                newNumberOfGuests = Int32.Parse(NumberOfGuestsTextBox.Text);
+
+            if ((e.Key == Windows.System.VirtualKey.Enter) && (oldNumberOfGuests != newNumberOfGuests))
+            {    
+                if (currentSelectedMealItem != null)
+                {    
+                    mealItemTotalWeight = float.Parse(WeightTextBox.Text, CultureInfo.InvariantCulture.NumberFormat);
+                    float mealItemNewWeight = (mealItemTotalWeight / oldNumberOfGuests) * newNumberOfGuests;
+                    WeightTextBox.Text = mealItemNewWeight.ToString().Replace('.', ',');
+                }
+
+                foreach (var mealIDAndWeight in _meal.mealItemIDsWithWeight.ToList())
+                {
+                    mealItemTotalWeight = mealIDAndWeight.Value;
+                    
+                    decimal roundedWeight = Math.Round((decimal)(mealItemTotalWeight / oldNumberOfGuests) * newNumberOfGuests, 0);
+                    _meal.mealItemIDsWithWeight[mealIDAndWeight.Key] = (float)roundedWeight;
+                }
+
+                MealItemsGridView.Focus(FocusState.Keyboard);
             }
         }
+
+        private async void MenuButton3_Click(object sender, RoutedEventArgs e)
+        {
+            // Create the message dialog and set its content
+            var messageDialog = new MessageDialog("Alle Gewichte zurücksetzen?");
+
+            // Add commands and set their callbacks; both buttons use the same callback function instead of inline event handlers
+            messageDialog.Commands.Add(new UICommand(
+                "Ja",
+                new UICommandInvokedHandler(this.MessageDialogInvokedHandler)));
+            messageDialog.Commands.Add(new UICommand(
+                "Nein",
+                new UICommandInvokedHandler(this.MessageDialogInvokedHandler)));
+
+            // Set the command that will be invoked by default
+            messageDialog.DefaultCommandIndex = 0;
+
+            // Set the command to be invoked when escape is pressed
+            messageDialog.CancelCommandIndex = 1;
+
+            // Show the message dialog
+            await messageDialog.ShowAsync();
+
+        }
+
+        private void MessageDialogInvokedHandler(IUICommand command)
+        {
+            if (command.Label == "Ja")
+            {
+                float mealItemTotalWeight = 0;
+
+                if (NumberOfGuestsTextBox.Text != "")
+                {
+                    int numberOfGuests = Int32.Parse(NumberOfGuestsTextBox.Text);
+                    MealItemViewModel defaultMealItem = new MealItemViewModel();
+
+                    foreach (var mealIDAndWeight in _meal.mealItemIDsWithWeight.ToList())
+                    {
+                        defaultMealItem = defaultMealItem.GetMealItemById((int)mealIDAndWeight.Key);
+                        //mealItemTotalWeight = mealIDAndWeight.Value;
+                        mealItemTotalWeight = defaultMealItem.TotalAmount;
+
+                        decimal roundedWeight = Math.Round((decimal)(mealItemTotalWeight * numberOfGuests), 0);
+                        _meal.mealItemIDsWithWeight[mealIDAndWeight.Key] = (float)roundedWeight;
+                    }
+                }
+            }
+        }
+
+
 
         private void MealItemsGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
