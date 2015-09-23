@@ -6,8 +6,10 @@ namespace hebestadt.CateringKingCalculator.Models
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
+        public string Attention { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string NameAndAddress { get; set; }
         public string Company { get; set; }
         public string Street { get; set; }
         public string Zip { get; set; }
