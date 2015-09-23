@@ -33,6 +33,7 @@ namespace hebestadt.CateringKingCalculator.Converters
         public object ConvertBack(object value, Type type, object parameter, string language)
         {
             object result = null;
+
             try
             {
                 result =  System.Convert.ToDateTime(value);
@@ -43,24 +44,6 @@ namespace hebestadt.CateringKingCalculator.Converters
             }
 
             return result;
-        }
-    }
-
-    public class IntToStringConverter : IValueConverter
-    {
-        public object Convert(object value, Type type, object parameter, string language)
-        {
-            string result = "";
-
-            result = value.ToString();
-
-            return result;
-        }
-
-        public object ConvertBack(object value, Type type, object parameter, string language)
-        {
-            return Int32.Parse((string)value);
-
         }
     }
 }
