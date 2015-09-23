@@ -1,6 +1,7 @@
 ﻿using hebestadt.CateringKingCalculator.Models;
 using hebestadt.CateringKingCalculator.ViewModels;
 using hebestadtaCateringKingCalculator;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,6 +28,25 @@ namespace CateringKingCalculator.ViewModels
 
                 id = value;
                 RaisePropertyChanged("Id");
+            }
+        }
+
+        private string attention = string.Empty;
+        public string Attention
+        {
+            get
+            {
+                return attention;
+            }
+
+            set
+            {
+                if (attention == value)
+                { return; }
+
+                attention = value;
+                isDirty = true;
+                RaisePropertyChanged("Attention");
             }
         }
 
@@ -65,6 +85,25 @@ namespace CateringKingCalculator.ViewModels
                 lastname = value;
                 isDirty = true;
                 RaisePropertyChanged("LastName");
+            }
+        }
+
+        private string nameandaddress = string.Empty;
+        public string NameAndAddress
+        {
+            get
+            {
+                return nameandaddress;
+            }
+
+            set
+            {
+                if (nameandaddress == value)
+                { return; }
+
+                nameandaddress = value;
+                isDirty = true;
+                RaisePropertyChanged("NameAndAddress");
             }
         }
 
@@ -213,14 +252,17 @@ namespace CateringKingCalculator.ViewModels
             return contacts;
         }
 
-        public ContactViewModel GetContact(string contactInfo)
+        public ContactViewModel GetContact(int contactID)
         {
             var contact = new ContactViewModel();
+
             using (var db = new SQLite.SQLiteConnection(App.DBPath))
             {
-                var _contact = (db.Table<Contact>().Where(c => c.LastName.Contains(contactInfo))).Single();
+                var _contact = (db.Table<Contact>().Where( c => c.Id == contactID)).Single();
+                contact.Attention = _contact.Attention;
                 contact.FirstName = _contact.FirstName;
                 contact.LastName = _contact.LastName;
+                contact.NameAndAddress = _contact.NameAndAddress;
                 contact.Company = _contact.Company;
                 contact.Street = _contact.Street;
                 contact.Zip = _contact.Zip;
@@ -229,6 +271,82 @@ namespace CateringKingCalculator.ViewModels
             }
 
             return contact;
+        }
+
+        public ContactViewModel GetContact(string contactInfo)
+        {
+            var contact = new ContactViewModel();
+            using (var db = new SQLite.SQLiteConnection(App.DBPath))
+            {
+                var _contact = (db.Table<Contact>().Where(c => c.LastName.Contains(contactInfo))).Single();
+                contact.Attention = _contact.Attention;
+                contact.FirstName = _contact.FirstName;
+                contact.LastName = _contact.LastName;
+                contact.NameAndAddress = _contact.NameAndAddress;
+                contact.Company = _contact.Company;
+                contact.Street = _contact.Street;
+                contact.Zip = _contact.Zip;
+                contact.City = _contact.Zip;
+                contact.PhoneNr = _contact.PhoneNr;
+            }
+
+            return contact;
+        }
+
+        public string SaveContact(ContactViewModel contact)
+        {
+            string result = string.Empty;
+            using (var db = new SQLite.SQLiteConnection(App.DBPath))
+            {
+                string change = string.Empty;
+                try
+                {
+                    var existingContact = (db.Table<Contact>().Where(
+                        c => c.Id == contact.Id)).SingleOrDefault();
+
+                    if (existingContact != null)
+                    {
+                        existingContact.Attention = contact.Attention;
+                        existingContact.FirstName = contact.FirstName;
+                        existingContact.LastName = contact.LastName;
+                        existingContact.NameAndAddress = contact.NameAndAddress;
+                        existingContact.Company = contact.Company;
+                        existingContact.Street = contact.Street;
+                        existingContact.Zip = contact.Zip;
+                        existingContact.City = contact.City;
+                        existingContact.PhoneNr = contact.PhoneNr;
+
+                        int success = db.Update(existingContact);
+                    }
+                    else
+                    {
+                        int success = db.Insert(new Contact()
+                        {
+                            Attention = contact.Attention,
+                            FirstName = contact.FirstName,
+                            LastName = contact.LastName,
+                            NameAndAddress = contact.NameAndAddress,
+                            Company = contact.Company,
+                            Street = contact.Street,
+                            Zip = contact.Zip,
+                            City = contact.City,
+                            PhoneNr = contact.PhoneNr
+                        });
+                        
+                        SQLiteCommand cmd = db.CreateCommand("SELECT last_insert_rowid()");                       
+                        int rowId = cmd.ExecuteScalar<int>();
+                        cmd.CommandText = "SELECT Id FROM Contact WHERE rowid = " + rowId.ToString();
+                        contact.Id = cmd.ExecuteScalar<int>();
+                    }
+                    result = "Success";
+                }
+                catch
+                {
+                    result = "This contact was not saved.";
+                }
+            }
+
+            return result;
         }
     }
 }
