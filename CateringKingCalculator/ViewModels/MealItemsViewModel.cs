@@ -13,7 +13,8 @@ namespace hebestadt.CateringKingCalculator.Models
     public class MealItemsViewModel : ViewModelBase, INotifyPropertyChanged
     {
         private static GenericListToByteArray _converter = new GenericListToByteArray();
-        private static GenericDictionaryToByteArrayFloat _dictionaryConverterFloat = new GenericDictionaryToByteArrayFloat();
+        private static GenericDictionaryToByteArrayFloat _dictionaryConverterFloat = 
+            new GenericDictionaryToByteArrayFloat();
 
         private ObservableCollection<MealItemViewModel> mealitems;
         public ObservableCollection<MealItemViewModel> MealItems
@@ -56,7 +57,8 @@ namespace hebestadt.CateringKingCalculator.Models
                         Id = _mealitem.Id,
                         Name = _mealitem.Name,
                         Category = _mealitem.Category,
-                        IngredientIDsWithTotalAmount = (Dictionary<float, float>)_dictionaryConverterFloat.ConvertBack(_mealitem.IngredientIDsWithTotalAmount, null, null, "")
+                        IngredientIDsWithTotalAmount = 
+                        (Dictionary<float, float>)_dictionaryConverterFloat.ConvertBack(_mealitem.IngredientIDsWithTotalAmount, null, null, "")
                     };
 
                     AddSorted(mealitems, mealitem, new CategoryCompare());
@@ -88,7 +90,8 @@ namespace hebestadt.CateringKingCalculator.Models
                             CategoryId = _mealitem.CategoryId,
                             TotalAmount = _mealitem.TotalAmount,
                             TotalAmountUnitOfMeasure = _mealitem.TotalAmountUnitOfMeasure,
-                            IngredientIDsWithTotalAmount = (Dictionary<float, float>)_dictionaryConverterFloat.ConvertBack(_mealitem.IngredientIDsWithTotalAmount, null, null, "")
+                            IngredientIDsWithTotalAmount = 
+                                (Dictionary<float, float>)_dictionaryConverterFloat.ConvertBack(_mealitem.IngredientIDsWithTotalAmount, null, null, "")
                         };
 
                         AddSorted(mealitems, mealitem, new CategoryCompare());
@@ -106,6 +109,7 @@ namespace hebestadt.CateringKingCalculator.Models
             {
                 var query = db.Table<MealItem>().Where(
                         p1 => p1.Category == categoryName);
+
                 foreach (var _mealitem in query)
                 {
                     var mealitem = new MealItemViewModel()
@@ -115,7 +119,8 @@ namespace hebestadt.CateringKingCalculator.Models
                         Category = _mealitem.Category,
                         TotalAmount = _mealitem.TotalAmount,
                         TotalAmountUnitOfMeasure = _mealitem.TotalAmountUnitOfMeasure,
-                        IngredientIDsWithTotalAmount = (Dictionary<float, float>)_dictionaryConverterFloat.ConvertBack(_mealitem.IngredientIDsWithTotalAmount, null, null, "")
+                        IngredientIDsWithTotalAmount = 
+                            (Dictionary<float, float>)_dictionaryConverterFloat.ConvertBack(_mealitem.IngredientIDsWithTotalAmount, null, null, "")
                     };
 
                     mealitems.Add(mealitem);
