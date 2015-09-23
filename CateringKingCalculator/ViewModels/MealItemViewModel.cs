@@ -157,7 +157,7 @@ namespace hebestadt.CateringKingCalculator.ViewModels
 
         #endregion Properties
 
-        public MealItemViewModel GetMealItem(int meaItemId)
+        public MealItemViewModel GetMealItemById(int meaItemId)
         {
             var mealitem = new MealItemViewModel();
             using (var db = new SQLite.SQLiteConnection(App.DBPath))
