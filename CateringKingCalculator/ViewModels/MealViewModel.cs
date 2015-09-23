@@ -108,6 +108,27 @@ namespace hebestadt.CateringKingCalculator.ViewModels
             }
         }
 
+
+        private int contactid = 0;
+        public int ContactId
+        {
+            get
+            {
+                return contactid;
+            }
+
+            set
+            {
+                if (contactid == value)
+                { return; }
+
+                contactid = value;
+
+                isDirty = true;
+                RaisePropertyChanged("ContactId");
+            }
+        }
+
         private string contact = string.Empty;
         public string Contact
         {
@@ -142,6 +163,21 @@ namespace hebestadt.CateringKingCalculator.ViewModels
             }
         }
 
+        private DateTimeOffset pickupdate = System.DateTime.Today.AddDays(7);
+        public DateTimeOffset PickupDate
+        {
+            get { return pickupdate; }
+
+            set
+            {
+                if (pickupdate == value)
+                { return; }
+                pickupdate = value;
+                isDirty = true;
+                RaisePropertyChanged("PickupDate");
+            }
+        }
+
         private TimeSpan deliverytime = System.TimeSpan.Zero;
         public TimeSpan DeliveryTime
         {
@@ -156,6 +192,23 @@ namespace hebestadt.CateringKingCalculator.ViewModels
                 deliverytime = value;
                 isDirty = true;
                 RaisePropertyChanged("DeliveryTime");
+            }
+        }
+
+        private string deliverylocation = string.Empty;
+        public string DeliveryLocation
+        {
+            get
+            { return deliverylocation; }
+
+            set
+            {
+                if (deliverylocation == value)
+                { return; }
+
+                deliverylocation = value;
+                isDirty = true;
+                RaisePropertyChanged("DeliveryLocation");
             }
         }
 
@@ -218,7 +271,10 @@ namespace hebestadt.CateringKingCalculator.ViewModels
                 meal.Name = _meal.Name;
                 meal.DeliveryDate = _meal.DeliveryDate;
                 meal.DeliveryTime = _meal.DeliveryTime;
+                meal.DeliveryLocation = _meal.DeliveryLocation;
+                meal.PickupDate = _meal.PickupDate;
                 meal.Contact = _meal.Contact;
+                meal.ContactId = _meal.ContactId;
                 meal.NumberOfGuests = _meal.NumberOfGuests;
                 meal.SilverWare = _meal.SilverWare;
                 meal.MealItemIDs = (List<int>)_converter.ConvertBack(_meal.MealItemIDs, null, null, "");
@@ -245,7 +301,10 @@ namespace hebestadt.CateringKingCalculator.ViewModels
                         existingMeal.Name = meal.Name;
                         existingMeal.DeliveryDate = meal.DeliveryDate;
                         existingMeal.DeliveryTime = meal.DeliveryTime;
+                        existingMeal.DeliveryLocation = meal.DeliveryLocation;
+                        existingMeal.PickupDate = meal.PickupDate;
                         existingMeal.Contact = meal.Contact;
+                        existingMeal.ContactId = meal.ContactId;
                         existingMeal.NumberOfGuests = meal.NumberOfGuests;
                         existingMeal.SilverWare = meal.SilverWare;
                         existingMeal.MealItemIDs = (byte[])_converter.Convert(meal.MealItemIDs, null, null, "");
@@ -262,7 +321,10 @@ namespace hebestadt.CateringKingCalculator.ViewModels
                             Name = meal.Name,
                             DeliveryDate = meal.DeliveryDate,
                             DeliveryTime = meal.DeliveryTime,
+                            DeliveryLocation = meal.DeliveryLocation,
+                            PickupDate = meal.PickupDate,
                             Contact = meal.Contact,
+                            ContactId = meal.ContactId,
                             NumberOfGuests = meal.NumberOfGuests,
                             SilverWare = meal.SilverWare,
                             MealItemIDs = (byte[])_converter.Convert(meal.MealItemIDs, null, null, ""),
