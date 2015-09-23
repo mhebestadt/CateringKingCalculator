@@ -48,10 +48,14 @@
                        FontSize="21.333"
                        Foreground="#FFFBFBFB"/>
             <ComboBox x:Name="AttentionTextBox"
+                      SelectionChanged="AttentionTextBox_SelectionChanged"
                      Width="130" 
             	     Margin="124,15,0,0"/>
             <TextBox x:Name="CustomerDataTextBox"
                      PlaceholderText="Komplette Daten (Name + Adresse) hier eingeben"
+                     SelectionChanged="CustomerDataTextBox_SelectionChanged"
+                     AcceptsReturn="True"
+                     IsSpellCheckEnabled="False"
                      HorizontalAlignment="Left" 
                      Margin="123,15,0,0"
                      TextWrapping="Wrap"
@@ -99,7 +103,7 @@
                        Text="Veranstaltungsort" 
                        VerticalAlignment="Top" 
                        Width="149"/>
-            <TextBox x:Name="EventDataTextBox"
+            <TextBox x:Name="EventLocationDataTextBox"
                      PlaceholderText="Adresse hier eingeben"
                      HorizontalAlignment="Left" 
                      Margin="123,15,0,0"
@@ -145,16 +149,6 @@
                     Height="60" 
                     VerticalAlignment="Top" 
                     Width="150"/>
-            <TimePicker x:Name="PickupTimePicker"
-                    Header="Abholzeit"
-                    TimeChanged="PickupTimePicker_TimeChanged"
-                    HorizontalAlignment="Left"
-                    ClockIdentifier="24HourClock"
-                    Language="de"
-                    Margin="123,27,0,0"
-                    Height="60" 
-                    VerticalAlignment="Top" 
-                    Width="20"/>
         </StackPanel>
     </Grid>
 </Page>
