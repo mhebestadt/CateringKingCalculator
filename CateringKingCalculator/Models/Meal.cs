@@ -12,7 +12,10 @@ namespace hebestadt.CateringKingCalculator
         public string DeliveryNoteId { get; set; }
         public DateTimeOffset DeliveryDate { get; set; }
         public TimeSpan DeliveryTime { get; set; }
+        public string DeliveryLocation { get; set; }
+        public DateTimeOffset PickupDate { get; set; }
         public string Contact { get; set; }
+        public int ContactId { get; set; }
         public int NumberOfGuests { get; set; }
         public bool SilverWare { get; set; }
         public byte[] MealItemIDs { get; set; }
