@@ -394,25 +394,44 @@ namespace hebestadt.CateringKingCalculator.ViewModels
             StringBuilder result = new StringBuilder();
             MealItemsViewModel mealItemsView = new MealItemsViewModel();
             IngredientsViewModel ingredientsView = new IngredientsViewModel();
+            ContactViewModel contact = new ContactViewModel();
+            contact = contact.GetContact(meal.ContactId);
+            string tmp = contact.NameAndAddress;
+            tmp = tmp.Replace('\n', '|');
+            tmp = tmp.Replace('\r', '|');
+            string nameAndAddress = tmp.Replace("||", "\\line ");
+            nameAndAddress = contact.Attention + "\\line " + tmp.Replace("||", "\\line ");
 
             result.Append(@"{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil\fcharset0 Calibri;}}");
-            result.Append(@"{\*\generator Riched20 10.0.10240}\viewkind4\uc1\pard\tx720\cf1\f0\fs24\lang1031\line\line\line\f1\fs28");
-            result.Append(" Lieferschein Nr. ").Append(meal.DeliveryNoteId).Append(@"\line \line \line "); ;
-            result.Append(meal.Name.ToString()).Append(@" \line\line\line");
+            result.Append(@"{\*\generator Riched20 10.0.10240}\viewkind4\uc1\pard\tx720\cf1\f0\fs22\lang1031\line\line\line\f1\fs26");
+            result.Append(" Lieferschein Nr. ").Append(meal.DeliveryNoteId).Append(@"\line \line "); ;
+            result.Append(nameAndAddress).Append(@" \line \line ");
+            result.Append("Tel. Nr. : ").Append(contact.PhoneNr).Append(@" \line \line ");
+            result.Append("Veranstaltungsort:").Append(@" \line ");
+            result.Append(meal.DeliveryLocation).Append(@" \line \line ");
+            result.Append("Ihr Ansprechpartner: ").Append(@" \line \line ");
             result.Append(_dateTimeConverter.Convert(meal.DeliveryDate, null, null, "")).Append("  ");
             result.Append(_timeSpanConverter.Convert(meal.DeliveryTime,null,null,"")).Append("  Uhr Buffetbeginn").Append(@"\line \line \line");
-            result.Append(" Erwachsene: ").Append(meal.NumberOfGuests).Append(@"\line \line ");
+            result.Append(@" \highlight2 ");
+            result.Append("Erwachsene: ").Append(meal.NumberOfGuests).Append(@"\line \line ");
+            result.Append(@" \highlight0 ");
 
             ObservableCollection<MealItemViewModel> _mealItems = 
                 mealItemsView.GetMealItems(meal.mealItemIDsWithWeight);
 
             foreach (var mealItem in _mealItems)
             {
-                float mealItemWeight = mealItemIDsWithWeight[mealItem.Id];
+                float mealItemWeight = meal.mealItemIDsWithWeight[mealItem.Id];
+                result.Append(@"\b ");
                 result.Append(mealItem.Name.ToString()).Append("   ");
-                result.Append(mealItemWeight.ToString()).Append("kg"); 
-                result.Append(@" \line ");
-                result.Append(GetIngredientsAsText(ingredientsView, mealItem));
+
+                UnitOfMeasureViewModel unitOfMeasure = new UnitOfMeasureViewModel();
+                string unitOfMeasureName = unitOfMeasure.GetUnitOfMeasure(mealItem.TotalAmountUnitOfMeasure).UnitName;
+                string unitOfMeasureAbbreviation = unitOfMeasure.GetUnitOfMeasure(mealItem.TotalAmountUnitOfMeasure).Abbreviation;
+
+                result.Append(mealItemWeight.ToString()).Append("").Append(unitOfMeasureAbbreviation);
+                result.Append(@"\line\b0 ");
+                result.Append(GetIngredientsAsText(ingredientsView, mealItem, meal.mealItemIDsWithWeight));
                 result.Append(@" \line ");
             }
 
@@ -421,7 +440,8 @@ namespace hebestadt.CateringKingCalculator.ViewModels
             return result.ToString();
         }
 
-        private string GetIngredientsAsText(IngredientsViewModel ingredientsView, MealItemViewModel mealItem)
+        private string GetIngredientsAsText(IngredientsViewModel ingredientsView, 
+            MealItemViewModel mealItem, Dictionary<float,float> mealItemIDsWithWeight)
         {
             StringBuilder sb = new StringBuilder();
             ObservableCollection<IngredientViewModel> ingredients =
@@ -429,15 +449,20 @@ namespace hebestadt.CateringKingCalculator.ViewModels
 
             if (ingredients.Count > 0)
             {
-                sb.Append(@"\b ");
+                //sb.Append(@"\b ");
                 int loopCount = 0;
-                UnitOfMeasureViewModel uom = new UnitOfMeasureViewModel();
+                UnitOfMeasureViewModel unitOfMeasure = new UnitOfMeasureViewModel();
+                MealItemViewModel defaultMealItem = new MealItemViewModel();
+                defaultMealItem = defaultMealItem.GetMealItemById(mealItem.Id);
 
                 foreach (var ingredient in ingredients)
                 {
-                    float ingredientWeight = mealItem.IngredientIDsWithTotalAmount[ingredient.Id];
-                    string uomName = uom.GetUnitOfMeasure(ingredient.UnitOfMeasure).UnitName;
-                    sb.Append(ingredientWeight.ToString()).Append(uomName).Append(" ");
+                    float ingredientDefaultWeight = mealItem.IngredientIDsWithTotalAmount[ingredient.Id];
+                    float ingredientWeight = (ingredientDefaultWeight / defaultMealItem.TotalAmount) * mealItemIDsWithWeight[mealItem.Id];
+                    decimal roundedIngredientWeight = Math.Round((decimal)ingredientWeight, 0);
+                    string uomName = unitOfMeasure.GetUnitOfMeasure(ingredient.UnitOfMeasure).Abbreviation;
+                    sb.Append(roundedIngredientWeight.ToString());
+                    sb.Append(uomName).Append(" ");
                     sb.Append(ingredient.Name);
 
                     if ((ingredients.Count >1) && (loopCount < (ingredients.Count-1)))
@@ -446,7 +471,8 @@ namespace hebestadt.CateringKingCalculator.ViewModels
                     loopCount++;
                 }
 
-                sb.Append(@"\line\b0");
+                //sb.Append(@"\line\b0");
+                sb.Append(@"\line");
                 return sb.ToString();
             }
             else
