@@ -49,7 +49,7 @@ namespace hebestadt.CateringKingCalculator.ViewModels
                         NumberOfGuests = _meal.NumberOfGuests,
                         SilverWare = _meal.SilverWare,
                         MealItemIDs = (List<int>)_converter.ConvertBack(_meal.MealItemIDs, null, null, ""),
-                        mealItemIDsWithWeight = (Dictionary<float,float>)_dictionaryConverterFloat.ConvertBack(_meal.MealItemIDsWithWeight, null, null, "")
+                        MealItemIDsWithWeight = (Dictionary<float,float>)_dictionaryConverterFloat.ConvertBack(_meal.MealItemIDsWithWeight, null, null, "")
                     };
 
                     meals.Add(meal);
