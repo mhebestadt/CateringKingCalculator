@@ -11,7 +11,7 @@ using CateringKingCalculator.ViewModels;
 
 namespace hebestadt.CateringKingCalculator.ViewModels
 {
-    public class MealViewModel : ViewModelBase
+    public class MealViewModel : ViewModelBase, IMealViewModel
     {
 
         #region Properties
@@ -213,7 +213,7 @@ namespace hebestadt.CateringKingCalculator.ViewModels
         }
 
         private Dictionary<float, float> mealitemidswithweight = new Dictionary<float, float>();
-        public Dictionary<float, float> mealItemIDsWithWeight
+        public Dictionary<float, float> MealItemIDsWithWeight
         {
             get
             {
@@ -259,7 +259,7 @@ namespace hebestadt.CateringKingCalculator.ViewModels
 
         #endregion "Properties"
 
-        public MealViewModel GetMeal(int mealId)
+        public IMealViewModel GetMeal(int mealId)
         {
             var meal = new MealViewModel();
             using (var db = new SQLite.SQLiteConnection(App.DBPath))
@@ -278,13 +278,13 @@ namespace hebestadt.CateringKingCalculator.ViewModels
                 meal.NumberOfGuests = _meal.NumberOfGuests;
                 meal.SilverWare = _meal.SilverWare;
                 meal.MealItemIDs = (List<int>)_converter.ConvertBack(_meal.MealItemIDs, null, null, "");
-                meal.mealItemIDsWithWeight = (Dictionary<float, float>)_dictionaryConverterFloat.ConvertBack(_meal.MealItemIDsWithWeight, null, null, "");
+                meal.MealItemIDsWithWeight = (Dictionary<float, float>)_dictionaryConverterFloat.ConvertBack(_meal.MealItemIDsWithWeight, null, null, "");
             }
 
             return meal;
         }
 
-        public string SaveMeal(MealViewModel meal)
+        public string SaveMeal(IMealViewModel meal)
         {
             string result = string.Empty;
             using (var db = new SQLite.SQLiteConnection(App.DBPath))
@@ -309,7 +309,7 @@ namespace hebestadt.CateringKingCalculator.ViewModels
                         existingMeal.SilverWare = meal.SilverWare;
                         existingMeal.MealItemIDs = (byte[])_converter.Convert(meal.MealItemIDs, null, null, "");
                         existingMeal.MealItemIDsWithWeight = 
-                            (byte[])_dictionaryConverterFloat.Convert(meal.mealItemIDsWithWeight, null, null, "");
+                            (byte[])_dictionaryConverterFloat.Convert(meal.MealItemIDsWithWeight, null, null, "");
 
                         int success = db.Update(existingMeal);
                     }
@@ -328,7 +328,7 @@ namespace hebestadt.CateringKingCalculator.ViewModels
                             NumberOfGuests = meal.NumberOfGuests,
                             SilverWare = meal.SilverWare,
                             MealItemIDs = (byte[])_converter.Convert(meal.MealItemIDs, null, null, ""),
-                            MealItemIDsWithWeight =(byte[])_dictionaryConverterFloat.Convert(meal.mealItemIDsWithWeight, null, null, "")
+                            MealItemIDsWithWeight =(byte[])_dictionaryConverterFloat.Convert(meal.MealItemIDsWithWeight, null, null, "")
                     });
                     }
                     result = "Success";
@@ -362,13 +362,14 @@ namespace hebestadt.CateringKingCalculator.ViewModels
             return result;
         }
 
-        public string AddMealItem(MealViewModel meal, int mealItemID, float mealItemWeight)
+        public string AddMealItem(IMealViewModel meal, int mealItemID, float mealItemWeight)
         {
             string result = string.Empty;
             float foundMealItemWeight = -1;
-            if (!meal.mealitemidswithweight.TryGetValue(mealItemID, out foundMealItemWeight))
+
+            if (!meal.MealItemIDsWithWeight.TryGetValue(mealItemID, out foundMealItemWeight))
             {
-                meal.mealitemidswithweight.Add(mealItemID, mealItemWeight);
+                meal.MealItemIDsWithWeight.Add(mealItemID, mealItemWeight);
                 result = meal.SaveMeal(meal);
             }
             else
@@ -379,17 +380,17 @@ namespace hebestadt.CateringKingCalculator.ViewModels
             return result;
         }
 
-        public string RemoveMealItem(MealViewModel meal, int mealItemID)
+        public string RemoveMealItem(IMealViewModel meal, int mealItemID)
         {
             string result = string.Empty;
 
-            meal.mealitemids.Remove(mealItemID);
+            meal.MealItemIDs.Remove(mealItemID);
             result = meal.SaveMeal(meal);
 
             return result;
         }
 
-        public string GetTextRepresentation(MealViewModel meal)
+        public string GetTextRepresentation(IMealViewModel meal)
         {
             StringBuilder result = new StringBuilder();
             MealItemsViewModel mealItemsView = new MealItemsViewModel();
@@ -417,11 +418,11 @@ namespace hebestadt.CateringKingCalculator.ViewModels
             result.Append(@" \highlight0 ");
 
             ObservableCollection<MealItemViewModel> _mealItems = 
-                mealItemsView.GetMealItems(meal.mealItemIDsWithWeight);
+                mealItemsView.GetMealItems(meal.MealItemIDsWithWeight);
 
             foreach (var mealItem in _mealItems)
             {
-                float mealItemWeight = meal.mealItemIDsWithWeight[mealItem.Id];
+                float mealItemWeight = meal.MealItemIDsWithWeight[mealItem.Id];
                 result.Append(@"\b ");
                 result.Append(mealItem.Name.ToString()).Append("   ");
 
@@ -431,7 +432,7 @@ namespace hebestadt.CateringKingCalculator.ViewModels
 
                 result.Append(mealItemWeight.ToString()).Append("").Append(unitOfMeasureAbbreviation);
                 result.Append(@"\line\b0 ");
-                result.Append(GetIngredientsAsText(ingredientsView, mealItem, meal.mealItemIDsWithWeight));
+                result.Append(GetIngredientsAsText(ingredientsView, mealItem, meal.MealItemIDsWithWeight));
                 result.Append(@" \line ");
             }
 
