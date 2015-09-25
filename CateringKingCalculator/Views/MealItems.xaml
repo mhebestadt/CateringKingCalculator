@@ -171,6 +171,17 @@
                             Background="Transparent"/>
                         <TextBlock Text="Button 3" FontSize="18" VerticalAlignment="Center" />
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button 
+                            x:Name="MealSuggestionButton" 
+                            FontFamily="Segoe MDL2 Assets" 
+                            Content="&#xE15C;"
+                            Click="MealSuggestionButton_Click"
+                            Width="50" 
+                            Height="50" 
+                            Background="Transparent"/>
+                        <TextBlock Text="Menü Vorschläge" FontSize="18" VerticalAlignment="Center" />
+                    </StackPanel>
                 </StackPanel>
             </SplitView.Pane>
         </SplitView>

@@ -58,7 +58,7 @@ namespace CateringKingCalculator.Views
 
                 _meal = (MealViewModel)e.Parameter;
                 mealItemsViewModel = new MealItemsViewModel();
-                _mealItems = mealItemsViewModel.GetMealItems(_meal.mealItemIDsWithWeight);
+                _mealItems = mealItemsViewModel.GetMealItems(_meal.MealItemIDsWithWeight);
 
                 MealItemsGridView.ItemsSource = _mealItems;
 
@@ -88,11 +88,20 @@ namespace CateringKingCalculator.Views
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            string result = _meal.DeleteMeal(_meal.Id);
+            ShowYesNoDialog("Dieses Essen wirklich löschen??",
+                new UICommandInvokedHandler(this.DeleteMealInvokedHandler));
+        }
 
-            if (string.CompareOrdinal("Success", result) == 0)
+        private void DeleteMealInvokedHandler(IUICommand command)
+        {
+            if (command.Label == "Ja")
             {
-                this.Frame.Navigate(typeof(StartPage));
+                string result = _meal.DeleteMeal(_meal.Id);
+
+                if (string.CompareOrdinal("Success", result) == 0)
+                {
+                    this.Frame.Navigate(typeof(StartPage));
+                }
             }
         }
 
@@ -166,7 +175,7 @@ namespace CateringKingCalculator.Views
                 if (WeightTextBox.Text != "" || int.TryParse(WeightTextBox.Text, out value) || WeightTextBox.Text == ",")
                 {
                     string str = WeightTextBox.Text.Replace(',', '.');
-                    this._meal.mealItemIDsWithWeight[currentSelectedMealItem.Id] =
+                    this._meal.MealItemIDsWithWeight[currentSelectedMealItem.Id] =
                         float.Parse(str, CultureInfo.InvariantCulture.NumberFormat);                 
                 }
             }
@@ -190,40 +199,38 @@ namespace CateringKingCalculator.Views
                     WeightTextBox.Text = mealItemNewWeight.ToString().Replace('.', ',');
                 }
 
-                foreach (var mealIDAndWeight in _meal.mealItemIDsWithWeight.ToList())
+                foreach (var mealIDAndWeight in _meal.MealItemIDsWithWeight.ToList())
                 {
                     mealItemTotalWeight = mealIDAndWeight.Value;
                     
                     decimal roundedWeight = Math.Round((decimal)(mealItemTotalWeight / oldNumberOfGuests) * newNumberOfGuests, 0);
-                    _meal.mealItemIDsWithWeight[mealIDAndWeight.Key] = (float)roundedWeight;
+                    _meal.MealItemIDsWithWeight[mealIDAndWeight.Key] = (float)roundedWeight;
                 }
 
                 MealItemsGridView.Focus(FocusState.Keyboard);
             }
         }
 
-        private async void MenuButton3_Click(object sender, RoutedEventArgs e)
+        private async void ShowYesNoDialog(string message, UICommandInvokedHandler invokeHandler)
         {
-            // Create the message dialog and set its content
-            var messageDialog = new MessageDialog("Alle Gewichte zurücksetzen?");
+            var messageDialog = new MessageDialog(message);
 
-            // Add commands and set their callbacks; both buttons use the same callback function instead of inline event handlers
             messageDialog.Commands.Add(new UICommand(
                 "Ja",
-                new UICommandInvokedHandler(this.MessageDialogInvokedHandler)));
+                new UICommandInvokedHandler(invokeHandler)));
+
             messageDialog.Commands.Add(new UICommand(
                 "Nein",
-                new UICommandInvokedHandler(this.MessageDialogInvokedHandler)));
+                new UICommandInvokedHandler(invokeHandler)));
 
-            // Set the command that will be invoked by default
             messageDialog.DefaultCommandIndex = 0;
-
-            // Set the command to be invoked when escape is pressed
             messageDialog.CancelCommandIndex = 1;
-
-            // Show the message dialog
             await messageDialog.ShowAsync();
+        }
 
+        private void MenuButton3_Click(object sender, RoutedEventArgs e)
+        {
+            ShowYesNoDialog("Alle Gewichte zurücksetzen?", new UICommandInvokedHandler(this.MessageDialogInvokedHandler));
         }
 
         private void MessageDialogInvokedHandler(IUICommand command)
@@ -237,14 +244,14 @@ namespace CateringKingCalculator.Views
                     int numberOfGuests = Int32.Parse(NumberOfGuestsTextBox.Text);
                     MealItemViewModel defaultMealItem = new MealItemViewModel();
 
-                    foreach (var mealIDAndWeight in _meal.mealItemIDsWithWeight.ToList())
+                    foreach (var mealIDAndWeight in _meal.MealItemIDsWithWeight.ToList())
                     {
                         defaultMealItem = defaultMealItem.GetMealItemById((int)mealIDAndWeight.Key);
                         //mealItemTotalWeight = mealIDAndWeight.Value;
                         mealItemTotalWeight = defaultMealItem.TotalAmount;
 
                         decimal roundedWeight = Math.Round((decimal)(mealItemTotalWeight * numberOfGuests), 0);
-                        _meal.mealItemIDsWithWeight[mealIDAndWeight.Key] = (float)roundedWeight;
+                        _meal.MealItemIDsWithWeight[mealIDAndWeight.Key] = (float)roundedWeight;
                     }
                 }
             }
@@ -263,9 +270,9 @@ namespace CateringKingCalculator.Views
             WeightTextBlock.Text = "Menge in " + unitOfMeasureName;
 
             string mealItemWeight = "";
-            if (_meal.mealItemIDsWithWeight[currentSelectedMealItem.Id] > 0)
+            if (_meal.MealItemIDsWithWeight[currentSelectedMealItem.Id] > 0)
             {
-                mealItemWeight = this._meal.mealItemIDsWithWeight[currentSelectedMealItem.Id].ToString();
+                mealItemWeight = this._meal.MealItemIDsWithWeight[currentSelectedMealItem.Id].ToString();
             }
             else
             {
@@ -329,6 +336,11 @@ namespace CateringKingCalculator.Views
         private void NumberOfGuestsTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             _numberOfGuests = NumberOfGuestsTextBox.Text;
+        }
+
+        private void MealSuggestionButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(MealSuggestions), _meal);
         }
     }
 }
