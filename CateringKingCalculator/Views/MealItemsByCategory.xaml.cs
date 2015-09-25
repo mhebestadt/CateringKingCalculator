@@ -2,20 +2,11 @@
 using hebestadt.CateringKingCalculator.Models;
 using hebestadt.CateringKingCalculator.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
@@ -28,8 +19,10 @@ namespace CateringKingCalculator.Views
     public sealed partial class MealItemsByCategory : Page
     {
         ObservableCollection<FoodCategoryViewModel> _foodCategories = null;
+        ObservableCollection<MealItemViewModel> _selectedMealItems = null;
         MealItemsViewModel mealItemsViewModel = null;
-        MealViewModel meal = null;
+        IMealViewModel _meal = null;
+        bool _foodCategoriesSelectionChanged = false;
 
         public MealItemsByCategory()
         {
@@ -38,6 +31,7 @@ namespace CateringKingCalculator.Views
             FoodCategoriesViewModel FoodCategoriesViewModel = new FoodCategoriesViewModel();
             _foodCategories = FoodCategoriesViewModel.GetFoodCategories();
             FoodCategoriesListView.ItemsSource = _foodCategories;
+            _selectedMealItems = new ObservableCollection<MealItemViewModel>();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -45,12 +39,15 @@ namespace CateringKingCalculator.Views
 
             if (e.Parameter != null)
             {
-                meal = (MealViewModel)e.Parameter;
+                _meal = (IMealViewModel)e.Parameter;
             }
         }
 
         private void FoodCategoriesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (MealItemsListView.SelectedItems.Count > 0)
+                _foodCategoriesSelectionChanged = true;
+
             FoodCategoryViewModel foodCategory = null;
             foodCategory = (FoodCategoryViewModel)FoodCategoriesListView.SelectedItem;
             MealItemsListView.ItemsSource = null;
@@ -58,23 +55,34 @@ namespace CateringKingCalculator.Views
             mealItemsViewModel = new MealItemsViewModel();
             ObservableCollection<MealItemViewModel> mealItems = mealItemsViewModel.GetMealItemsByCategory(foodCategory.Name);
             MealItemsListView.ItemsSource = mealItems;
+
+            int loopCount = 0;
+            foreach (MealItemViewModel mealItem in MealItemsListView.Items)
+            {
+                if (_selectedMealItems.Any<MealItemViewModel>(p => p.Id == mealItem.Id))
+                {
+                    MealItemsListView.SelectRange(new ItemIndexRange(loopCount, 1));
+                }
+
+                loopCount++;
+            }
         }
 
         private void NavigateBackButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(MealItems), meal);
+            this.Frame.Navigate(typeof(MealItems), _meal);
         }
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             string result = String.Empty;
-            var mealItems = MealItemsListView.SelectedItems;
 
-            foreach (var _mealItem in mealItems)
+            foreach (var _mealItem in _selectedMealItems)
             {
-                result = meal.AddMealItem(meal, ((MealItemViewModel)_mealItem).Id, 0);
-            }            
+                result = _meal.AddMealItem(_meal, ((MealItemViewModel)_mealItem).Id, 0);
+            }
 
+            /* Leave this here for now must think about it
             if (string.CompareOrdinal("Success", result) == 0)
             {
                 this.Frame.Navigate(typeof(MealItems), meal);
@@ -84,6 +92,7 @@ namespace CateringKingCalculator.Views
                 var dialog = new MessageDialog(result);
                 await dialog.ShowAsync();
             }
+            */
         }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
@@ -103,6 +112,23 @@ namespace CateringKingCalculator.Views
 
         private void MealItemsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (!_foodCategoriesSelectionChanged)
+            {
+                foreach (MealItemViewModel mealItem in e.RemovedItems)
+                {
+                    _selectedMealItems.Remove(mealItem);
+                }
+
+                foreach (MealItemViewModel mealItem in e.AddedItems)
+                {
+                    _selectedMealItems.Add(mealItem);
+                }
+            }
+            else
+            {
+                _foodCategoriesSelectionChanged = false;
+            }
+
             int numberSelectedItems = MealItemsListView.SelectedItems.Count;
 
             if (numberSelectedItems > 1)
