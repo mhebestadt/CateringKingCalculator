@@ -15,5 +15,6 @@ namespace hebestadt.CateringKingCalculator.Models
         public string Zip { get; set; }
         public string City { get; set; }
         public string PhoneNr { get; set; }
+        public string CellPhoneNr { get; set; }
     }
 }
