@@ -23,6 +23,9 @@ namespace hebestadt.CateringKingCalculator.Converters
         {
             int result = 0;
 
+            if (value == null)
+                throw new ArgumentNullException();
+
             try
             {
                 if (value is DateTimeOffset)
@@ -68,36 +71,19 @@ namespace hebestadt.CateringKingCalculator.Converters
             return result.AddDays(-3);
         }
 
-        private static DateTime FirstDateOfWeek(int year, int weekOfYear, System.Globalization.CultureInfo ci)
-        {
-            DateTime jan1 = new DateTime(year, 1, 1);
-            int daysOffset = (int)ci.DateTimeFormat.FirstDayOfWeek - (int)jan1.DayOfWeek;
-            DateTime firstWeekDay = jan1.AddDays(daysOffset);
-            int firstWeek = ci.Calendar.GetWeekOfYear(jan1, ci.DateTimeFormat.CalendarWeekRule, ci.DateTimeFormat.FirstDayOfWeek);
-
-            if (firstWeek <= 1 || firstWeek > 50)
-            {
-                weekOfYear -= 1;
-            }
-
-            return firstWeekDay.AddDays(weekOfYear * 7);
-        }
-
         public object ConvertBack(object value, Type type, object parameter, string language)
         {
             DateTime[] result = null;
+
+            if (value == null)
+                throw new ArgumentNullException();
 
             if (value is int)
             {
                 if (((int)value > 0) && ((int)value < 54))
                 {
                     DateTime startDate = FirstDateOfWeekISO8601(DateTime.Now.Year, (int)value);
-                    DateTime endDate = startDate.AddDays(6);
-                    result = Enumerable.Range(1, 7).Select(num => startDate.AddDays(num)).ToArray();
-                    /*DateTime start = new DateTime(DateTime.Now.Year, 1, 4);
-                    start = start.AddDays(-((int)start.DayOfWeek));
-                    start = start.AddDays(7 * ((int)value - 1));
-                    result = Enumerable.Range(1, 7).Select(num => start.AddDays(num)).ToArray();*/
+                    result = Enumerable.Range(0, 7).Select(num => startDate.AddDays(num)).ToArray();
                 }
                 else
                 {
