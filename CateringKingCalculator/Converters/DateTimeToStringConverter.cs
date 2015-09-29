@@ -3,7 +3,7 @@ using Windows.UI.Xaml.Data;
 
 namespace hebestadt.CateringKingCalculator.Converters
 {
-    public class DateTimeToStringConverter: IValueConverter
+    public class DateTimeToStringConverter : IValueConverter
     {
         public object Convert(object value, Type type, object parameter, string language)
         {

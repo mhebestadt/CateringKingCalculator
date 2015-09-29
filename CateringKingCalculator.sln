@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CateringKingCalculator", "CateringKingCalculator\CateringKingCalculator.csproj", "{36526E56-C8AA-4343-B307-27E9397005CB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CateringKingCalculatorTests", "CateringKingCalculatorTests\CateringKingCalculatorTests.csproj", "{A21A93E2-5615-4826-A671-E97BED7A0388}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -33,6 +35,24 @@ Global
 		{36526E56-C8AA-4343-B307-27E9397005CB}.Release|x86.ActiveCfg = Release|x86
 		{36526E56-C8AA-4343-B307-27E9397005CB}.Release|x86.Build.0 = Release|x86
 		{36526E56-C8AA-4343-B307-27E9397005CB}.Release|x86.Deploy.0 = Release|x86
+		{A21A93E2-5615-4826-A671-E97BED7A0388}.Debug|ARM.ActiveCfg = Debug|ARM
+		{A21A93E2-5615-4826-A671-E97BED7A0388}.Debug|ARM.Build.0 = Debug|ARM
+		{A21A93E2-5615-4826-A671-E97BED7A0388}.Debug|ARM.Deploy.0 = Debug|ARM
+		{A21A93E2-5615-4826-A671-E97BED7A0388}.Debug|x64.ActiveCfg = Debug|x64
+		{A21A93E2-5615-4826-A671-E97BED7A0388}.Debug|x64.Build.0 = Debug|x64
+		{A21A93E2-5615-4826-A671-E97BED7A0388}.Debug|x64.Deploy.0 = Debug|x64
+		{A21A93E2-5615-4826-A671-E97BED7A0388}.Debug|x86.ActiveCfg = Debug|x86
+		{A21A93E2-5615-4826-A671-E97BED7A0388}.Debug|x86.Build.0 = Debug|x86
+		{A21A93E2-5615-4826-A671-E97BED7A0388}.Debug|x86.Deploy.0 = Debug|x86
+		{A21A93E2-5615-4826-A671-E97BED7A0388}.Release|ARM.ActiveCfg = Release|ARM
+		{A21A93E2-5615-4826-A671-E97BED7A0388}.Release|ARM.Build.0 = Release|ARM
+		{A21A93E2-5615-4826-A671-E97BED7A0388}.Release|ARM.Deploy.0 = Release|ARM
+		{A21A93E2-5615-4826-A671-E97BED7A0388}.Release|x64.ActiveCfg = Release|x64
+		{A21A93E2-5615-4826-A671-E97BED7A0388}.Release|x64.Build.0 = Release|x64
+		{A21A93E2-5615-4826-A671-E97BED7A0388}.Release|x64.Deploy.0 = Release|x64
+		{A21A93E2-5615-4826-A671-E97BED7A0388}.Release|x86.ActiveCfg = Release|x86
+		{A21A93E2-5615-4826-A671-E97BED7A0388}.Release|x86.Build.0 = Release|x86
+		{A21A93E2-5615-4826-A671-E97BED7A0388}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

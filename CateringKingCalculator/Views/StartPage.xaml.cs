@@ -13,16 +13,16 @@ namespace CateringKingCalculator.Views
     /// </summary>
     public sealed partial class StartPage : Page
     {
-        MealsViewModel mealsViewModel = null;
-        ObservableCollection<MealViewModel> meals = null;
+        MealsViewModel _mealsViewModel = null;
+        ObservableCollection<MealViewModel> _meals = null;
 
         public StartPage()
         {
             this.InitializeComponent();
 
-            mealsViewModel = new MealsViewModel();
-            meals = mealsViewModel.GetMeals();
-            MealsStartView.ItemsSource = meals;
+            _mealsViewModel = new MealsViewModel();
+            _meals = _mealsViewModel.GetMeals();
+            MealsStartView.ItemsSource = _meals;
         }
 
         private void MealsStartView_ItemClick(object sender, ItemClickEventArgs e)

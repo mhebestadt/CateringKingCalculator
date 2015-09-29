@@ -73,6 +73,8 @@ namespace CateringKingCalculator.Views
             {
                 _contact.Attention = AttentionTextBox.SelectedItem.ToString();
                 _contact.NameAndAddress = CustomerDataTextBox.Text;
+                _contact.PhoneNr = LandLineTextBox.Text;
+                _contact.CellPhoneNr = CellNoTextBox.Text;
                 string result = _contact.SaveContact(_contact);
 
                 if (result == "Success")

@@ -103,22 +103,30 @@
     <Compile Include="Comparerers\CategoryCompare.cs" />
     <Compile Include="Converters\ContactIdToNameConverter.cs" />
     <Compile Include="Converters\DateTimeToStringConverter.cs" />
+    <Compile Include="Converters\DateTimeToWeekOfYearISO8601.cs" />
     <Compile Include="Converters\GenericDictionaryToByteArray.cs" />
     <Compile Include="Converters\GenericDictionaryToByteArrayFloat.cs" />
     <Compile Include="Converters\GenericListToByteArray.cs" />
     <Compile Include="Converters\IntToStringConverter.cs" />
+    <Compile Include="Converters\MealItemIDsToTextConverter.cs" />
     <Compile Include="Converters\TimeSpanToStringConverter.cs" />
+    <Compile Include="Dialogs\Dialogs.cs" />
     <Compile Include="Extensions\ObservableCollectionExt.cs" />
     <Compile Include="Models\Contact.cs" />
     <Compile Include="Models\FoodCategory.cs" />
+    <Compile Include="Models\MealSuggestion.cs" />
+    <Compile Include="Models\MealSuggestionCategory.cs" />
     <Compile Include="Models\UnitOfMeasure.cs" />
     <Compile Include="ViewModels\ContactViewModel.cs" />
     <Compile Include="ViewModels\FoodCategoriesViewModel.cs" />
     <Compile Include="ViewModels\FoodCategoryViewModel.cs" />
+    <Compile Include="ViewModels\IMealViewModel.cs" />
     <Compile Include="ViewModels\MealItemsViewModel.cs" />
     <Compile Include="ViewModels\IngredientsViewModel.cs" />
     <Compile Include="ViewModels\IngredientViewModel.cs" />
     <Compile Include="ViewModels\MealItemViewModel.cs" />
+    <Compile Include="ViewModels\MealSuggestionCategoryViewModel.cs" />
+    <Compile Include="ViewModels\MealSuggestionViewModel.cs" />
     <Compile Include="ViewModels\MealsViewModel.cs" />
     <Compile Include="ViewModels\MealViewModel.cs" />
     <Compile Include="ViewModels\UnitOfMeasureViewModel.cs" />
@@ -147,6 +155,9 @@
     </Compile>
     <Compile Include="Views\MealItemsByCategory.xaml.cs">
       <DependentUpon>MealItemsByCategory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MealSuggestions.xaml.cs">
+      <DependentUpon>MealSuggestions.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NewMealCustomerEventDataInput.xaml.cs">
       <DependentUpon>NewMealCustomerEventDataInput.xaml</DependentUpon>
@@ -236,6 +247,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\MealSuggestions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\NewMealCustomerEventDataInput.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -248,6 +263,12 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

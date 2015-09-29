@@ -23,10 +23,12 @@ namespace CateringKingCalculator.Views
         MealItemsViewModel mealItemsViewModel = null;
         IMealViewModel _meal = null;
         bool _foodCategoriesSelectionChanged = false;
+        Type _backNavigationTarget = typeof(MealItems);
 
         public MealItemsByCategory()
         {
             this.InitializeComponent();
+            this.Loaded += MealItemsByCategory_Loaded;
 
             FoodCategoriesViewModel FoodCategoriesViewModel = new FoodCategoriesViewModel();
             _foodCategories = FoodCategoriesViewModel.GetFoodCategories();
@@ -34,12 +36,24 @@ namespace CateringKingCalculator.Views
             _selectedMealItems = new ObservableCollection<MealItemViewModel>();
         }
 
+        private void MealItemsByCategory_Loaded(object sender, RoutedEventArgs e)
+        {
+        }
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-
             if (e.Parameter != null)
             {
                 _meal = (IMealViewModel)e.Parameter;
+
+                if (_meal is MealViewModel)
+                {
+                    _backNavigationTarget = typeof(MealItems);
+                }
+                else if (_meal is MealSuggestionViewModel)
+                {
+                    _backNavigationTarget = typeof(MealSuggestions);
+                }
             }
         }
 
@@ -70,7 +84,7 @@ namespace CateringKingCalculator.Views
 
         private void NavigateBackButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(MealItems), _meal);
+            this.Frame.Navigate(_backNavigationTarget, _meal);
         }
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)

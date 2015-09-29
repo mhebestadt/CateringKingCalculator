@@ -23,7 +23,7 @@ namespace CateringKingCalculator.Views
             var meal = (MealViewModel)e.Parameter;
             
             mealItemsViewModel = new MealItemsViewModel();
-            mealitems = mealItemsViewModel.GetMealItems(meal.mealItemIDsWithWeight);
+            mealitems = mealItemsViewModel.GetMealItems(meal.MealItemIDsWithWeight);
             int y = mealitems.Count;
             MealItemsListView.ItemsSource = mealitems;
         }
