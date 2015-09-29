@@ -12,6 +12,7 @@ namespace hebestadt.CateringKingCalculator.ViewModels
         string DeliveryNoteId { get; set; }
         TimeSpan DeliveryTime { get; set; }
         int Id { get; set; }
+        int CategoryId { get; set; }
         bool IsDirty { get; set; }
         List<int> MealItemIDs { get; set; }
         Dictionary<float, float> MealItemIDsWithWeight { get; set; }
