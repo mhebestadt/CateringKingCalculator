@@ -257,6 +257,19 @@ namespace hebestadt.CateringKingCalculator.ViewModels
             }
         }
 
+        int IMealViewModel.CategoryId
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         #endregion "Properties"
 
         public IMealViewModel GetMeal(int mealId)
@@ -406,8 +419,9 @@ namespace hebestadt.CateringKingCalculator.ViewModels
             result.Append(@"{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil\fcharset0 Calibri;}}");
             result.Append(@"{\*\generator Riched20 10.0.10240}\viewkind4\uc1\pard\tx720\cf1\f0\fs22\lang1031\line\line\line\f1\fs26");
             result.Append(" Lieferschein Nr. ").Append(meal.DeliveryNoteId).Append(@"\line \line "); ;
-            result.Append(nameAndAddress).Append(@" \line \line ");
-            result.Append("Tel. Nr. : ").Append(contact.PhoneNr).Append(@" \line \line ");
+            result.Append(nameAndAddress).Append(@" \line ");
+            result.Append("Tel. Nr. : ").Append(contact.PhoneNr).Append(@" \line ");
+            result.Append("Handy Nr. : ").Append(contact.CellPhoneNr).Append(@" \line \line ");
             result.Append("Veranstaltungsort:").Append(@" \line ");
             result.Append(meal.DeliveryLocation).Append(@" \line \line ");
             result.Append("Ihr Ansprechpartner: ").Append(@" \line \line ");
