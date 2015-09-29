@@ -257,6 +257,7 @@
                 x:Name="NumberOfGuestsTextBox" 
                 Text="{Binding NumberOfGuests, Converter={StaticResource IntToStringConverter}, Mode=TwoWay}" 
                 KeyUp="NumberOfGuestsTextBox_KeyUp"
+                TextChanged="NumberOfGuestsTextBox_TextChanged"
                 GotFocus="NumberOfGuestsTextBox_GotFocus"
                 Width="300" 
                 Height="25"

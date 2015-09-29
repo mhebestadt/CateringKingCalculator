@@ -1,18 +1,15 @@
-﻿using hebestadt.CateringKingCalculator.Converters;
-using hebestadt.CateringKingCalculator.Models;
+﻿using hebestadt.CateringKingCalculator.Models;
 using hebestadt.CateringKingCalculator.ViewModels;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using System;
 using System.Globalization;
-using System.IO;
-using Windows.UI.Xaml.Documents;
 using CateringKingCalculator.ViewModels;
 using System.Linq;
 using Windows.UI.Popups;
+using hebestadt.CateringKingCalculator.Dialogs;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -31,6 +28,7 @@ namespace CateringKingCalculator.Views
         ListView listViewIngredientsDetail = new ListView();
         ContactViewModel _contact = null;
         string _numberOfGuests = "";
+        bool _numberOfGuestsChanged = false;
 
         public MealItems()
         {
@@ -42,7 +40,6 @@ namespace CateringKingCalculator.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-
             if (e.Parameter != null)
             {
                 /* This section adds dynamic list view - it will be removed at some point */
@@ -88,7 +85,7 @@ namespace CateringKingCalculator.Views
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            ShowYesNoDialog("Dieses Essen wirklich löschen??",
+            Dialogs.ShowYesNoDialog("Dieses Essen wirklich löschen??",
                 new UICommandInvokedHandler(this.DeleteMealInvokedHandler));
         }
 
@@ -107,9 +104,11 @@ namespace CateringKingCalculator.Views
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            string result = _meal.SaveMeal(_meal);
-
-            if (string.CompareOrdinal("Success", result) == 0)
+            if (_numberOfGuestsChanged == true)
+            {
+                Dialogs.ShowYesNoDialog("Anzahl der Gäste wurde geändert. Die Änderungen jetzt speichern?", SaveNoGuestsInvokeHandler);
+            }
+            else
             {
                 this.Frame.Navigate(typeof(StartPage));
             }
@@ -183,6 +182,7 @@ namespace CateringKingCalculator.Views
 
         private void NumberOfGuestsTextBox_KeyUp(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
+           /*
             int oldNumberOfGuests = Int32.Parse(_numberOfGuests);
             int newNumberOfGuests = 0; 
             float mealItemTotalWeight = 0;
@@ -209,31 +209,15 @@ namespace CateringKingCalculator.Views
 
                 MealItemsGridView.Focus(FocusState.Keyboard);
             }
-        }
-
-        private async void ShowYesNoDialog(string message, UICommandInvokedHandler invokeHandler)
-        {
-            var messageDialog = new MessageDialog(message);
-
-            messageDialog.Commands.Add(new UICommand(
-                "Ja",
-                new UICommandInvokedHandler(invokeHandler)));
-
-            messageDialog.Commands.Add(new UICommand(
-                "Nein",
-                new UICommandInvokedHandler(invokeHandler)));
-
-            messageDialog.DefaultCommandIndex = 0;
-            messageDialog.CancelCommandIndex = 1;
-            await messageDialog.ShowAsync();
+            */
         }
 
         private void MenuButton3_Click(object sender, RoutedEventArgs e)
         {
-            ShowYesNoDialog("Alle Gewichte zurücksetzen?", new UICommandInvokedHandler(this.MessageDialogInvokedHandler));
+            Dialogs.ShowYesNoDialog("Alle Gewichte zurücksetzen?", new UICommandInvokedHandler(this.ResetWeightsInvokedHandler));
         }
 
-        private void MessageDialogInvokedHandler(IUICommand command)
+        private void ResetWeightsInvokedHandler(IUICommand command)
         {
             if (command.Label == "Ja")
             {
@@ -247,7 +231,6 @@ namespace CateringKingCalculator.Views
                     foreach (var mealIDAndWeight in _meal.MealItemIDsWithWeight.ToList())
                     {
                         defaultMealItem = defaultMealItem.GetMealItemById((int)mealIDAndWeight.Key);
-                        //mealItemTotalWeight = mealIDAndWeight.Value;
                         mealItemTotalWeight = defaultMealItem.TotalAmount;
 
                         decimal roundedWeight = Math.Round((decimal)(mealItemTotalWeight * numberOfGuests), 0);
@@ -257,7 +240,10 @@ namespace CateringKingCalculator.Views
             }
         }
 
-
+        private void NumberOfGuestsTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _numberOfGuestsChanged = true;
+        }
 
         private void MealItemsGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
@@ -302,7 +288,39 @@ namespace CateringKingCalculator.Views
 
         private void DeliveryNoteButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(DeliveryNote), _meal);
+            if (_numberOfGuestsChanged == true)
+            {
+                Dialogs.ShowYesNoDialog("Anzahl der Gäste wurde geändert. Jetzt speichern?", SaveNoGuestsInvokeHandler);
+            }
+            else
+            {
+                this.Frame.Navigate(typeof(DeliveryNote), _meal);
+            }
+        }
+
+        private void SaveNoGuestsInvokeHandler(IUICommand command)
+        {
+            if (command.Label == "Ja")
+            {
+                int oldNumberOfGuests = Int32.Parse(_numberOfGuests);
+                int newNumberOfGuests = 0;
+                float mealItemTotalWeight = 0;
+
+                if (NumberOfGuestsTextBox.Text != "")
+                {
+                    newNumberOfGuests = Int32.Parse(NumberOfGuestsTextBox.Text);
+
+                    foreach (var mealIDAndWeight in _meal.MealItemIDsWithWeight.ToList())
+                    {
+                        mealItemTotalWeight = mealIDAndWeight.Value;
+
+                        decimal roundedWeight = Math.Round((decimal)(mealItemTotalWeight / oldNumberOfGuests) * newNumberOfGuests, 0);
+                        _meal.MealItemIDsWithWeight[mealIDAndWeight.Key] = (float)roundedWeight;
+                    }
+
+                    _meal.SaveMeal(_meal);
+                }
+            }
         }
 
         private void MenuButton2_Click(object sender, RoutedEventArgs e)
@@ -342,5 +360,7 @@ namespace CateringKingCalculator.Views
         {
             this.Frame.Navigate(typeof(MealSuggestions), _meal);
         }
+
+        
     }
 }
