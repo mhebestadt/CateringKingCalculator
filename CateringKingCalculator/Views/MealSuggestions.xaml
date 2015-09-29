@@ -9,8 +9,20 @@
     mc:Ignorable="d">
 
     <Page.BottomAppBar>
-        <AppBar 
+        <AppBar
             x:Name="MealSuggestionsPageAppBar">
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Left" 
+                        VerticalAlignment="Top">
+            <AppBarButton 
+                x:Name="AcceptMealSuggestions_AppBarButton"
+                Style="{StaticResource AcceptButtonStyle}" Width="72" Height="57"
+                Click="AcceptMealSuggestions_AppBarButton_Click"
+                HorizontalAlignment="Left" 
+                Icon="Accept" 
+                Label="Menü-Vorschlag übernehmen" 
+                Margin="40,0,0,0">
+            </AppBarButton>
             <AppBarButton 
                 x:Name="AddMealSuggestions_AppBarButton"
                 Style="{StaticResource AddItemButtonStyle}" Width="72" Height="57"
@@ -18,7 +30,9 @@
                 HorizontalAlignment="Left" 
                 Icon="Accept" 
                 Label="Neuer Menü-Vorschlag" 
-                Margin="40,0,0,0"/>
+                Margin="40,0,0,0">
+            </AppBarButton>
+             </StackPanel>
         </AppBar>
     </Page.BottomAppBar>
 
@@ -54,9 +68,76 @@
     </Page.Resources>
 
     <Grid Background="Black">
+        <SplitView x:Name="MySplitView" DisplayMode="CompactInline"  IsPaneOpen="False" 
+                CompactPaneLength="50" OpenPaneLength="150">
+            <SplitView.Pane>
+                <StackPanel Background="Gray">
+                    <Button 
+                        x:Name="HamburgerButton" 
+                        FontFamily="Segoe MDL2 Assets" 
+                        Content="&#xE700;"
+                        Width="50" 
+                        Height="50" 
+                        Background="Transparent" 
+                        Click="HamburgerButton_Click"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Button 
+                            x:Name="DeliveryNoteButton"
+                            Click="DeliveryNoteButton_Click"
+                            Visibility="Collapsed"
+                            FontFamily="Segoe MDL2 Assets" 
+                            Content="&#xE9A9;"
+                            Width="50" 
+                            Height="50"/>
+                        <TextBlock 
+                            Text="Neue Kategorie"
+                            FontSize="18"
+                            Visibility="Collapsed"
+                            VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button 
+                            x:Name="MenuButton2"
+                            Click= "MenuButton2_Click"
+                            FontFamily="Segoe MDL2 Assets" 
+                            Content="&#xE10F;"
+                            Width="50" 
+                            Height="50" 
+                            Background="Transparent"/>
+                        <TextBlock 
+                            Text="Button 2" 
+                            FontSize="18" 
+                            VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button 
+                            x:Name="MenuButton3" 
+                            FontFamily="Segoe MDL2 Assets" 
+                            Content="&#xE1D6;"
+                            Click="MenuButton3_Click"
+                            Width="50" 
+                            Height="50" 
+                            Background="Transparent"/>
+                        <TextBlock Text="Button 3" FontSize="18" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button 
+                            x:Name="MealSuggestionButton" 
+                            FontFamily="Segoe MDL2 Assets" 
+                            Content="&#xE15C;"
+                            Click="MealSuggestionButton_Click"
+                            Width="50" 
+                            Height="50" 
+                            Background="Transparent"/>
+                        <TextBlock Text="Menü Vorschläge" FontSize="18" VerticalAlignment="Center" />
+                    </StackPanel>
+                </StackPanel>
+            </SplitView.Pane>
+        </SplitView>
+        
         <Frame x:Name="MealSuggestionTopFrame"               
                HorizontalAlignment="Left" 
-               Margin="0,0,0,0" 
+               Margin="50,0,0,0" 
                VerticalAlignment="Top" 
                Height="73" 
                Width="1275" Background="#FF830707">
@@ -76,8 +157,9 @@
         <GridView x:Name="MealSuggestionsGridView"
                   ItemTemplate="{StaticResource MealSuggestionTemplate}"
                   ItemsSource="{Binding Mode=OneWay, Source={StaticResource MealsViewSource}}"
+                  SelectionChanged="MealSuggestionsGridView_SelectionChanged"
                   HorizontalAlignment="Left" 
-                  Margin="0,75,0,0" 
+                  Margin="50,75,0,0" 
                   VerticalAlignment="Top" 
                   Width="1276" 
                   Height="298" BorderBrush="#FF830707">
