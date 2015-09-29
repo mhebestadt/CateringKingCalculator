@@ -59,14 +59,7 @@
             
             <DataTemplate x:Key="FoodCategoriesViewTemplate">
                 <Grid>
-                    <Ellipse x:Name="Ellipse"
-                         Grid.RowSpan="1"
-                         Width ="32"
-                         Height="32"
-                         Margin="6"
-                         VerticalAlignment="Center"
-                         HorizontalAlignment="Center"
-                         Fill="LightGray"/>
+                    
                     <TextBlock Grid.Column="1"
                                 Text="{Binding Name}"
                                 Margin="12,6,0,0"
