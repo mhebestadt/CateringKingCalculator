@@ -10,10 +10,40 @@ namespace CateringKingCalculatorTests.Converters
         private static DateTimeToWeekOfYearISO8601 converter = new DateTimeToWeekOfYearISO8601();
 
         [TestMethod]
+        public void TestConvertWithNullParameter_ShouldThrowArgumentNullException()
+        {
+            int weekOfYear = 0;
+
+            try
+            {
+                weekOfYear = (int)converter.Convert(null, null, null, "");
+            }
+            catch (ArgumentNullException exception)
+            {
+                StringAssert.Contains(exception.Message, "");
+            }
+        }
+
+        [TestMethod]
+        public void TestConvertBackWithNullParameter_ShouldThrowArgumentNullException()
+        {
+            DateTime[] result = null;
+
+            try
+            {
+                result = (DateTime[])converter.ConvertBack(null, null, null, "");
+            }
+            catch (ArgumentNullException exception)
+            {
+                StringAssert.Contains(exception.Message, "");
+            }
+        }
+
+        [TestMethod]
         public void GetWeekOfYear_ValidDate()
         {
             int weekOfYear = (int)converter.Convert(DateTimeOffset.Now, null, null, "");
-            Assert.IsTrue((weekOfYear > 0) && (weekOfYear < 44));
+            Assert.IsTrue((weekOfYear > 0) && (weekOfYear < 54));
         }
 
         [TestMethod]
