@@ -2,13 +2,17 @@
 using System;
 using Windows.UI.Xaml.Data;
 
+
 namespace hebestadt.CateringKingCalculator.Converters
 {
-    class ContactIdToNameConverter : IValueConverter
+    public class ContactIdToNameConverter : IValueConverter
     {
         public object Convert(object value, Type type, object parameter, string language)
         {
             string result = "";
+
+            if (value == null)
+                throw new ArgumentNullException();
 
             if ((int)value != 0)
             {
@@ -23,6 +27,9 @@ namespace hebestadt.CateringKingCalculator.Converters
         public object ConvertBack(object value, Type type, object parameter, string language)
         {
             object result = null;
+
+            if (value == null)
+                throw new ArgumentNullException();
 
             return result;
         }
