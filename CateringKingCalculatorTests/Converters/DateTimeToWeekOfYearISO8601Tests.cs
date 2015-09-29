@@ -2,41 +2,25 @@
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using System;
 
+
 namespace CateringKingCalculatorTests.Converters
 {
+
     [TestClass]
-    public class DateTimeToWeekOfYearISO8601Tests
+    public class DateTimeToWeekOfYearISO8601Tests : ConverterTestBase
     {
         private static DateTimeToWeekOfYearISO8601 converter = new DateTimeToWeekOfYearISO8601();
 
         [TestMethod]
-        public void TestConvertWithNullParameter_ShouldThrowArgumentNullException()
+        public void ConvertWithNullParameter_ShouldThrowArgumentNullException()
         {
-            int weekOfYear = 0;
-
-            try
-            {
-                weekOfYear = (int)converter.Convert(null, null, null, "");
-            }
-            catch (ArgumentNullException exception)
-            {
-                StringAssert.Contains(exception.Message, "");
-            }
+            this.ConvertWithNullParameter_ShouldThrowArgumentNullException(converter);
         }
 
         [TestMethod]
-        public void TestConvertBackWithNullParameter_ShouldThrowArgumentNullException()
+        public void ConvertBackWithNullParameter_ShouldThrowArgumentNullException()
         {
-            DateTime[] result = null;
-
-            try
-            {
-                result = (DateTime[])converter.ConvertBack(null, null, null, "");
-            }
-            catch (ArgumentNullException exception)
-            {
-                StringAssert.Contains(exception.Message, "");
-            }
+            this.ConvertBackWithNullParameter_ShouldThrowArgumentNullException(converter);
         }
 
         [TestMethod]
