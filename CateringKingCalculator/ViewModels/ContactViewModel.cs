@@ -202,6 +202,25 @@ namespace CateringKingCalculator.ViewModels
             }
         }
 
+        private string cellphonenr = string.Empty;
+        public string CellPhoneNr
+        {
+            get
+            {
+                return cellphonenr;
+            }
+
+            set
+            {
+                if (cellphonenr == value)
+                { return; }
+                cellphonenr = value;
+                isDirty = true;
+                RaisePropertyChanged("CellPhoneNr");
+            }
+
+        }
+
         private bool isDirty = false;
         public bool IsDirty
         {
@@ -268,6 +287,7 @@ namespace CateringKingCalculator.ViewModels
                 contact.Zip = _contact.Zip;
                 contact.City = _contact.Zip;
                 contact.PhoneNr = _contact.PhoneNr;
+                contact.CellPhoneNr = _contact.CellPhoneNr;
             }
 
             return contact;
@@ -288,6 +308,7 @@ namespace CateringKingCalculator.ViewModels
                 contact.Zip = _contact.Zip;
                 contact.City = _contact.Zip;
                 contact.PhoneNr = _contact.PhoneNr;
+                contact.CellPhoneNr = _contact.CellPhoneNr;
             }
 
             return contact;
@@ -315,6 +336,7 @@ namespace CateringKingCalculator.ViewModels
                         existingContact.Zip = contact.Zip;
                         existingContact.City = contact.City;
                         existingContact.PhoneNr = contact.PhoneNr;
+                        existingContact.CellPhoneNr = contact.CellPhoneNr;
 
                         int success = db.Update(existingContact);
                     }
@@ -330,7 +352,8 @@ namespace CateringKingCalculator.ViewModels
                             Street = contact.Street,
                             Zip = contact.Zip,
                             City = contact.City,
-                            PhoneNr = contact.PhoneNr
+                            PhoneNr = contact.PhoneNr,
+                            CellPhoneNr = contact.CellPhoneNr
                         });
                         
                         SQLiteCommand cmd = db.CreateCommand("SELECT last_insert_rowid()");                       
