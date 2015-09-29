@@ -32,6 +32,22 @@ namespace hebestadt.CateringKingCalculator.ViewModels
             }
         }
 
+        private int categoryid = 0;
+        public int CategoryId
+        {
+            get
+            { return categoryid; }
+
+            set
+            {
+                if (categoryid == value)
+                { return; }
+
+                categoryid = value;
+                RaisePropertyChanged("CategoryId");
+            }
+        }
+
         private Dictionary<float, float> mealitemidswithweight = new Dictionary<float, float>();
         public Dictionary<float, float> MealItemIDsWithWeight
         {
@@ -229,6 +245,7 @@ namespace hebestadt.CateringKingCalculator.ViewModels
                 var _mealSuggestion = (db.Table<MealSuggestion>().Where(
                     c => c.Id == mealId)).Single();
                 mealSuggestion.Id = _mealSuggestion.Id;
+                mealSuggestion.CategoryId = _mealSuggestion.CategoryId;
                 mealSuggestion.MealItemIDsWithWeight = 
                     (Dictionary<float, float>)_dictionaryConverterFloat.ConvertBack(_mealSuggestion.MealItemIDsWithWeight, null, null, "");
             }
@@ -249,6 +266,7 @@ namespace hebestadt.CateringKingCalculator.ViewModels
 
                     if (existingMealSuggestion != null)
                     {
+                        existingMealSuggestion.CategoryId = mealSuggestion.CategoryId;
                         existingMealSuggestion.MealItemIDsWithWeight =
                             (byte[])_dictionaryConverterFloat.Convert(mealSuggestion.MealItemIDsWithWeight, null, null, "");
 
@@ -258,6 +276,7 @@ namespace hebestadt.CateringKingCalculator.ViewModels
                     {
                         int success = db.Insert(new MealSuggestion()
                         {
+                            CategoryId = mealSuggestion.CategoryId,
                             MealItemIDsWithWeight = 
                                 (byte[])_dictionaryConverterFloat.Convert(mealSuggestion.MealItemIDsWithWeight, null, null, "")
                         });
@@ -340,6 +359,7 @@ namespace hebestadt.CateringKingCalculator.ViewModels
                     var mealSuggestion = new MealSuggestionViewModel()
                     {
                         Id = _mealSuggestion.Id,
+                        CategoryId = _mealSuggestion.CategoryId,
                         MealItemIDsWithWeight = 
                             (Dictionary<float, float>)_dictionaryConverterFloat.ConvertBack(_mealSuggestion.MealItemIDsWithWeight, null, null, "")
                     };
