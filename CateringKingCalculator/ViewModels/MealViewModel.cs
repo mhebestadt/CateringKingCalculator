@@ -403,6 +403,22 @@ namespace hebestadt.CateringKingCalculator.ViewModels
             return result;
         }
 
+        public string SetDefaultMealItemWeights(IMealViewModel meal)
+        {
+            string result = "";
+            MealItemViewModel mealItem = new MealItemViewModel();
+
+            foreach (var mealItemKeyValue in meal.MealItemIDsWithWeight.ToList())
+            { 
+                mealItem = mealItem.GetMealItemById((int)mealItemKeyValue.Key);
+                float mealItemWeightDefault = mealItem.TotalAmount;
+                float totalWeight = mealItemWeightDefault * meal.NumberOfGuests;
+                meal.MealItemIDsWithWeight[mealItemKeyValue.Key] = totalWeight;
+            }
+            
+            return result;
+        }
+
         public string GetTextRepresentation(IMealViewModel meal)
         {
             StringBuilder result = new StringBuilder();
