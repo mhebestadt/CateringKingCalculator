@@ -244,6 +244,7 @@ namespace hebestadtaCateringKingCalculator
                     db.CreateTable<UnitOfMeasure>();
                     db.CreateTable<Contact>();
                     db.CreateTable<MealSuggestion>();
+                    db.CreateTable <MealSuggestionCategory>();
                 }
 
                 //this.ResetData();
