@@ -397,7 +397,7 @@ namespace hebestadt.CateringKingCalculator.ViewModels
         {
             string result = string.Empty;
 
-            meal.MealItemIDs.Remove(mealItemID);
+            meal.MealItemIDsWithWeight.Remove(mealItemID);
             result = meal.SaveMeal(meal);
 
             return result;
@@ -489,6 +489,7 @@ namespace hebestadt.CateringKingCalculator.ViewModels
                 foreach (var ingredient in ingredients)
                 {
                     float ingredientDefaultWeight = mealItem.IngredientIDsWithTotalAmount[ingredient.Id];
+                    if (defaultMealItem.TotalAmount == 0) defaultMealItem.TotalAmount = 1;
                     float ingredientWeight = (ingredientDefaultWeight / defaultMealItem.TotalAmount) * mealItemIDsWithWeight[mealItem.Id];
                     decimal roundedIngredientWeight = Math.Round((decimal)ingredientWeight, 0);
                     string uomName = unitOfMeasure.GetUnitOfMeasure(ingredient.UnitOfMeasure).Abbreviation;
