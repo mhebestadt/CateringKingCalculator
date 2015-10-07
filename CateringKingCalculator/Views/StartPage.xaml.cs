@@ -70,7 +70,7 @@ namespace CateringKingCalculator.Views
         {
             string result = mealItemRaw;
 
-            Regex regex = new Regex(@" [a-z\d]{1,2},");
+            Regex regex = new Regex(@" [A-Za-z\d]{1,2},");
             Match match = regex.Match(mealItemRaw);
             int index = match.Index;
             if (index > 0) { result = result.Substring(0, index); }
@@ -185,9 +185,11 @@ namespace CateringKingCalculator.Views
             string line = "";
             string[] mealItemsRaw = fileContent.Split('|');
             char[] trimChar = {'\n','\r'};
+            bool mealItemExists = false;
 
             foreach(var mealItemRaw in mealItemsRaw)
             {
+                if (mealItemRaw.ToString().Length == 0) { continue; }
                 string mealItemInfo = mealItemRaw.TrimStart(trimChar);
                 using (System.IO.StringReader stringReader = new System.IO.StringReader(mealItemInfo))
                 {
@@ -206,7 +208,7 @@ namespace CateringKingCalculator.Views
                             mealItemName = CleanMealItemName(line);
                             MealItemViewModel mealItemView = new MealItemViewModel();
                             // In case the meal item exists we move on to the next
-                            if (mealItemView.MealItemExists(mealItemName) == true) { break; }
+                            if (mealItemView.MealItemExists(mealItemName) == true) { mealItemExists = true; break; }
                             lineNo++;
                             continue;
                         }
@@ -229,6 +231,9 @@ namespace CateringKingCalculator.Views
                         rawIngredients = InterpretIngredientDefinition(line);
                         lineNo++;
                     }
+
+                    // Let's see if there was an inner break
+                    if (mealItemExists) { mealItemExists = false; continue; }
 
                     // if go this far it means a new meal item
                     MealItemViewModel mealItem = new MealItemViewModel();
@@ -303,7 +308,7 @@ namespace CateringKingCalculator.Views
                 byte[] converted = Encoding.Convert(Encoding.GetEncoding("iso-8859-1"), Encoding.UTF8, fileAsBytes);
                 string fileContent = Encoding.UTF8.GetString(converted, 0, converted.Length);
 
-                ImportMealItemsData(fileContent, "Vom Schwein");
+                ImportMealItemsData(fileContent, "Vom Geflügel");
             }
         }
     }
