@@ -162,14 +162,19 @@ namespace hebestadt.CateringKingCalculator.ViewModels
             var mealitem = new MealItemViewModel();
             using (var db = new SQLite.SQLiteConnection(App.DBPath))
             {
-                var _mealitem = (db.Table<MealItem>().Where(
-                    c => c.Id == meaItemId)).Single();
-                mealitem.Id = _mealitem.Id;
-                mealitem.Name = _mealitem.Name;
-                mealitem.Category = _mealitem.Category;
-                mealitem.TotalAmount = _mealitem.TotalAmount;
-                mealitem.TotalAmountUnitOfMeasure = _mealitem.TotalAmountUnitOfMeasure;
-                mealitem.IngredientIDsWithTotalAmount = (Dictionary<float, float>)_dictionaryConverterFloat.ConvertBack(_mealitem.IngredientIDsWithTotalAmount, null, null, "");
+                try
+                {
+                    var _mealitem = (db.Table<MealItem>().Where(
+                        c => c.Id == meaItemId)).Single();
+                    mealitem.Id = _mealitem.Id;
+                    mealitem.Name = _mealitem.Name;
+                    mealitem.Category = _mealitem.Category;
+                    mealitem.TotalAmount = _mealitem.TotalAmount;
+                    mealitem.TotalAmountUnitOfMeasure = _mealitem.TotalAmountUnitOfMeasure;
+                    mealitem.IngredientIDsWithTotalAmount = (Dictionary<float, float>)_dictionaryConverterFloat.ConvertBack(_mealitem.IngredientIDsWithTotalAmount, null, null, "");
+                }
+                catch(InvalidOperationException e)
+                { }
             }
 
             return mealitem;
@@ -218,6 +223,21 @@ namespace hebestadt.CateringKingCalculator.ViewModels
                 {
                     result = "This meal item was not saved.";
                 }
+            }
+
+            return result;
+        }
+
+        public bool MealItemExists(string mealItemName)
+        {
+            bool result = true;  //initialized true because nothing happens in that case
+
+            using (var db = new SQLite.SQLiteConnection(App.DBPath))
+            {
+                var mealItem = db.Table<MealItem>()
+                    .Where(c => c.Name.Contains(mealItemName));
+                if (mealItem.Count() > 0) result = true;
+                else result = false;
             }
 
             return result;

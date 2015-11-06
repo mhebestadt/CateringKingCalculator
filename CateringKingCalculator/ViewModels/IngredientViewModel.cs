@@ -1,5 +1,6 @@
 ﻿using hebestadt.CateringKingCalculator.Models;
 using hebestadtaCateringKingCalculator;
+using System;
 using System.Linq;
 
 namespace hebestadt.CateringKingCalculator.ViewModels
@@ -163,6 +164,70 @@ namespace hebestadt.CateringKingCalculator.ViewModels
             return ingredient;
         }
 
+        public string SaveIngredientCheckExisting(IngredientViewModel ingredient)
+        {
+            string result = string.Empty;
+
+            using (var db = new SQLite.SQLiteConnection(App.DBPath))
+            {
+                try
+                {
+                    var existingIngredient = (db.Table<Ingredient>().Where(
+                            c => c.Name.Contains(ingredient.Name))).SingleOrDefault();
+                    if (existingIngredient == null)
+                    {
+                        int success = db.Insert(new Ingredient()
+                        {
+                            Name = ingredient.Name,
+                            Weight = ingredient.Weight,
+                            UnitOfMeasure = ingredient.UnitOfMeasure,
+                            Category = ingredient.Category,
+                            Manufacturer = ingredient.Manufacturer
+                        });
+                    }
+
+                }
+                catch { }
+            }
+
+            return result;
+        }
+
+        public IngredientViewModel IngredientExists(string ingredientName)
+        {
+            IngredientViewModel result = null;  //initialized true because nothing happens in that case
+
+            using (var db = new SQLite.SQLiteConnection(App.DBPath))
+            {
+                try
+                {
+                    var ingredient = db.Table<Ingredient>()
+                        .Where(c => c.Name == ingredientName).SingleOrDefault();
+                    if (ingredient != null)
+                    {
+                        result = new IngredientViewModel();
+                        result.Id = ingredient.Id;
+                        result.Name = ingredient.Name;
+                        result.Weight = ingredient.Weight;
+                        result.UnitOfMeasure = ingredient.UnitOfMeasure;
+                        result.Manufacturer = ingredient.Manufacturer;
+                        result.Category = ingredient.Category;
+                    }
+                    else
+                    {
+                        int y = 0;
+                    }
+                }
+                catch(Exception e)
+                {
+                    string exceptionMsg = e.Message;
+                    //Looks like the ingredient was not found. A linq problem I need to investigate
+                }
+            }
+
+            return result;
+        }
+
         public string SaveIngredient(IngredientViewModel ingredient)
         {
             string result = string.Empty;
@@ -179,7 +244,9 @@ namespace hebestadt.CateringKingCalculator.ViewModels
                         existingIngredient.Name = ingredient.Name;
                         existingIngredient.Weight = ingredient.Weight;
                         existingIngredient.UnitOfMeasure = ingredient.UnitOfMeasure;
-                        
+                        existingIngredient.Manufacturer = ingredient.Manufacturer;
+                        existingIngredient.Category = ingredient.Category;
+
                         int success = db.Update(existingIngredient);
                     }
                     else
@@ -188,7 +255,8 @@ namespace hebestadt.CateringKingCalculator.ViewModels
                         {
                             Name = ingredient.Name,
                             Weight = ingredient.Weight,
-                            UnitOfMeasure = ingredient.UnitOfMeasure
+                            UnitOfMeasure = ingredient.UnitOfMeasure,
+                            Category = ingredient.Category
                         });
                     }
                     result = "Success";
