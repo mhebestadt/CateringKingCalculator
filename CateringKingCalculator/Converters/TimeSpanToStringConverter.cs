@@ -9,6 +9,11 @@ namespace hebestadt.CateringKingCalculator.Converters
 {
     public class TimeSpanToStringConverter : IValueConverter
     {
+        public object Convert(object value)
+        {
+            return this.Convert(value, null, null, "");
+        }
+
         public object Convert(object value, Type type, object parameter, string language)
         {
             string result = "";
@@ -35,6 +40,11 @@ namespace hebestadt.CateringKingCalculator.Converters
             }
 
             return result;
+        }
+
+        public object ConvertBack(object value)
+        {
+            return this.ConvertBack(value, null, null, "");
         }
 
         public object ConvertBack(object value, Type type, object parameter, string language)
