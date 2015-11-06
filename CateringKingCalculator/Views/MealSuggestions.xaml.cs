@@ -76,6 +76,7 @@ namespace CateringKingCalculator.Views
             if (_meal.MealItemIDsWithWeight.Count == 0)
             {
                 _meal.MealItemIDsWithWeight = _mealSuggestion.MealItemIDsWithWeight;
+                _meal.SetDefaultMealItemWeights(_meal);
                 this.Frame.Navigate(typeof(MealItems), _meal);
             }
             else
