@@ -110,6 +110,7 @@ namespace CateringKingCalculator.Views
             }
             else
             {
+                _meal.SaveMeal(_meal);
                 this.Frame.Navigate(typeof(StartPage));
             }
         }
