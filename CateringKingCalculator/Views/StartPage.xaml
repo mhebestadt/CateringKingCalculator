@@ -9,9 +9,11 @@
     mc:Ignorable="d">
 
     <Page.BottomAppBar>
-        <AppBar 
-            x:Name="MealsPageAppBar">
-            <AppBarButton 
+        <AppBar x:Name="MealsPageAppBar">
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Left" 
+                        VerticalAlignment="Top">
+                <AppBarButton 
                 x:Name="MealsAdd_AppBarButton"
                 Style="{StaticResource AddItemButtonStyle}" Width="72" Height="57"
                 Click="MealsAdd_AppBarButton_Click"
@@ -19,6 +21,15 @@
                 Icon="Accept" 
                 Label="appbarbutton" 
                 Margin="40,0,0,0"/>
+                <AppBarButton 
+                x:Name="Import_AppBarButton"
+                Style="{StaticResource ImportButtonStyle}" Width="72" Height="57"
+                Click="Import_AppBarButton_Click"
+                HorizontalAlignment="Left" 
+                Icon="Accept" 
+                Label="appbarbutton" 
+                Margin="40,0,0,0"/>
+            </StackPanel>
         </AppBar>
     </Page.BottomAppBar>
 

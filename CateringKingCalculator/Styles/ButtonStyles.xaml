@@ -296,4 +296,46 @@
         </Setter>
     </Style>
 
+    <Style x:Key="ImportButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
+        <Setter Property="FontSize" Value="9"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <StackPanel Orientation="Vertical">
+                            <Grid  Margin="0,14,0,5" >
+                                <Ellipse x:Name="ButtonEllipse" Height="40" Width="40" Fill="Transparent" HorizontalAlignment="Center"
+                                        Stroke="{StaticResource ApplicationForegroundThemeBrush}" StrokeThickness="2" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="Glyph" Text="&#xE150;" FontFamily="Segoe UI Symbol" FontSize="24.777" HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"/>
+                            </Grid>
+                            <TextBlock x:Name="Content" Text="{TemplateBinding Content}" HorizontalAlignment="Center"
+                                    FontFamily="Segoe UI" FontSize="12"/>
+                        </StackPanel>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="PointerOver">
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0" To="LightGray" Storyboard.TargetProperty="(Rectangle.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="ButtonEllipse" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0" To="Gray" Storyboard.TargetProperty="(Rectangle.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="ButtonEllipse" />
+                                        <ColorAnimation Duration="0" To="White" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="Content" />
+                                        <ColorAnimation Duration="0" To="White" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="Glyph" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

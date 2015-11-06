@@ -92,6 +92,30 @@ namespace CateringKingCalculator.ViewModels
             return foodcategoryitem;
         }
 
+        public FoodCategoryViewModel GetFoodCategoryByName(string foodCategoryName)
+        {
+            FoodCategoryViewModel foodCategory = null;
+
+            using (var db = new SQLite.SQLiteConnection(App.DBPath))
+            {
+                try
+                {
+                    var _foodCategory = (db.Table<FoodCategory>().Where(
+                        c => c.Name.Contains(foodCategoryName))).Single();
+                    if (_foodCategory != null)
+                    {
+                        foodCategory = new FoodCategoryViewModel();
+                        foodCategory.Id = _foodCategory.Id;
+                        foodCategory.Name = _foodCategory.Name;
+                        foodCategory.UnitOfMeasure = _foodCategory.UnitOfMeasure;
+                    }
+                }
+                catch { }
+            }
+
+            return foodCategory;
+        }
+
 
         public string SaveFoodCategory(FoodCategoryViewModel foodCategory)
         {

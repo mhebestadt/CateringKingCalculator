@@ -50,13 +50,21 @@
                     Label="appbarbutton" 
                     Margin="60,0,0,0"/>
                 <AppBarButton 
-                    x:Name="RemoveItemButton"
+                    x:Name="RemoveMealItemButton"
                     Style="{StaticResource RemoveItemButtonStyle}" Width="72" Height="57"
-                    Click="RemoveItemButton_Click"
+                    Click="RemoveMealItemButton_Click"
                     HorizontalAlignment="Left" 
                     Icon="Accept" 
                     Label="appbarbutton" 
                     Margin="70,0,0,0"/>
+                <AppBarButton 
+                    x:Name="EditMealItemButton"
+                    Style="{StaticResource EditButtonStyle}" Width="72" Height="57"
+                    Click="EditMealItemButton_Click"
+                    HorizontalAlignment="Left" 
+                    Icon="Accept" 
+                    Label="appbarbutton" 
+                    Margin="60,0,0,0"/>
             </StackPanel>
         </AppBar>
     </Page.BottomAppBar>
@@ -121,7 +129,7 @@
         </Border>
 
         <SplitView x:Name="MySplitView" DisplayMode="CompactOverlay"  IsPaneOpen="False" 
-                CompactPaneLength="50" OpenPaneLength="150">
+                CompactPaneLength="50" OpenPaneLength="150" Margin="2,-4,-2,4">
             <SplitView.Pane>
                 <StackPanel Background="Gray">
                     <Button 

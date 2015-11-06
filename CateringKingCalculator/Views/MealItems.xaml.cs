@@ -115,29 +115,20 @@ namespace CateringKingCalculator.Views
             }
         }
 
-        private void RemoveItemButton_Click(object sender, RoutedEventArgs e)
-        {
-            MealItemViewModel mealItem = null;
-            mealItem = (MealItemViewModel)MealItemsGridView.SelectedItem;
-            string result = _meal.RemoveMealItem(_meal, mealItem.Id);
-
-            if (string.CompareOrdinal("Success", result) == 0)
-            {
-
-            }
-        }
-
         private void MealItemsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            IngredientsListView.ItemsSource = null;
+            IngredientsListView.Items.Clear();
+
             MealItemViewModel mealItem = null;
             mealItem = (MealItemViewModel)MealItemsGridView.SelectedItem;
 
-            IngredientsListView.ItemsSource = null;
-            IngredientsListView.Items.Clear();
-            ingredientsViewModel = new IngredientsViewModel();
-            ObservableCollection<IngredientViewModel> ingredients = ingredientsViewModel.GetIngredients(mealItem.IngredientIDsWithTotalAmount);
-            IngredientsListView.ItemsSource = ingredients;
-
+            if (mealItem != null)
+            {
+                ingredientsViewModel = new IngredientsViewModel();
+                ObservableCollection<IngredientViewModel> ingredients = ingredientsViewModel.GetIngredients(mealItem.IngredientIDsWithTotalAmount);
+                IngredientsListView.ItemsSource = ingredients;
+            }
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -362,6 +353,20 @@ namespace CateringKingCalculator.Views
             this.Frame.Navigate(typeof(MealSuggestions), _meal);
         }
 
-        
+        private void RemoveMealItemButton_Click(object sender, RoutedEventArgs e)
+        {
+            string result = "";
+            MealItemViewModel mealItem = null;
+            mealItem = (MealItemViewModel)MealItemsGridView.SelectedItem;
+            if (mealItem != null) result = _meal.RemoveMealItem(_meal, mealItem.Id);
+            if (string.CompareOrdinal("Success", result) == 0) _mealItems.Remove(mealItem);
+        }
+
+        private void EditMealItemButton_Click(object sender, RoutedEventArgs e)
+        {
+            MealItemViewModel mealItem = null;
+            mealItem = (MealItemViewModel)MealItemsGridView.SelectedItem;
+            if (mealItem != null) this.Frame.Navigate(typeof(NewMealItem), mealItem);
+        }
     }
 }
