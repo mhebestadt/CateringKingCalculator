@@ -93,7 +93,7 @@
     <!--A reference to the entire .Net Framework and Windows SDK are automatically included-->
     <None Include="project.json" />
     <SDKReference Include="MSTestFramework.Universal, Version=$(UnitTestPlatformVersion)" />
-    <SDKReference Include="SQLite.UAP.2015, Version=3.9.2">
+    <SDKReference Include="SQLite.UAP.2015, Version=3.8.11.1">
       <Name>SQLite for Universal App Platform</Name>
     </SDKReference>
     <SDKReference Include="TestPlatform.Universal, Version=$(UnitTestPlatformVersion)" />
