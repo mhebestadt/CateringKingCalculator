@@ -87,7 +87,7 @@ namespace CateringKingCalculator.Views
             this.Frame.Navigate(_backNavigationTarget, _meal);
         }
 
-        private async void SaveButton_Click(object sender, RoutedEventArgs e)
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             string result = String.Empty;
 

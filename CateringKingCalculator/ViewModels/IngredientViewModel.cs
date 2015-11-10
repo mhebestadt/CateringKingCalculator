@@ -215,7 +215,7 @@ namespace hebestadt.CateringKingCalculator.ViewModels
                     }
                     else
                     {
-                        int y = 0;
+                        
                     }
                 }
                 catch(Exception e)

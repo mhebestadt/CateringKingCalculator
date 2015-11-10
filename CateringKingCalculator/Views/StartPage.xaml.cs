@@ -282,7 +282,6 @@ namespace CateringKingCalculator.Views
                      
                 }
             }
-            int z = 0;
         }
 
         private async void Import_AppBarButton_Click(object sender, RoutedEventArgs e)

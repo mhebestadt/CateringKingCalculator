@@ -173,7 +173,7 @@ namespace hebestadt.CateringKingCalculator.ViewModels
                     mealitem.TotalAmountUnitOfMeasure = _mealitem.TotalAmountUnitOfMeasure;
                     mealitem.IngredientIDsWithTotalAmount = (Dictionary<float, float>)_dictionaryConverterFloat.ConvertBack(_mealitem.IngredientIDsWithTotalAmount, null, null, "");
                 }
-                catch(InvalidOperationException e)
+                catch(Exception e)
                 { }
             }
 
