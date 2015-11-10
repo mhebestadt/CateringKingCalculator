@@ -8,32 +8,42 @@ namespace CateringKingCalculator.Converters
     {
         public object Convert(object value, Type type, object parameter, string language)
         {
+            if (value == null)
+                throw new ArgumentNullException();
+
             byte[] menuItemsWithWeight = { };
 
-            if (value != null)
+            int dictSize = ((Dictionary<int, int>)value).Count;
+            int[,] array = new int[dictSize, 2];
+
+            int count = 0;
+            foreach (var item in ((Dictionary<int, int>)value))
             {
-                int dictSize = ((Dictionary<int, int>)value).Count;
-                int[,] array = new int[dictSize, 2];
+                array[count, 0] = item.Key;
+                array[count, 1] = item.Value;
 
-                int count = 0;
-                foreach (var item in ((Dictionary<int, int>)value))
-                {
-
-                    array[count, 0] = item.Key;
-                    array[count, 1] = item.Value;
-
-                    count++;
-                }
-
-                menuItemsWithWeight = ToByteArray(array);
+                count++;
             }
+
+            menuItemsWithWeight = ToByteArray(array);            
 
             return menuItemsWithWeight;
         }
 
+        public object Convert(object value)
+        {
+            return this.Convert(value, null, null, "");
+        }
+
+        public object ConvertBack(object value)
+        {
+            return this.ConvertBack(value, null, null, "");
+        }
+
         public object ConvertBack(object value, Type type, object parameter, string language)
         {
-            if (value == null) { return null; }
+            if (value == null)
+                throw new ArgumentNullException();
 
             Dictionary<int, int> dictionary = new Dictionary<int, int>();
 

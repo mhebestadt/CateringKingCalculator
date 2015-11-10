@@ -33,6 +33,16 @@ namespace CateringKingCalculator.Converters
             return menuItemsWithWeight;
         }
 
+        public object Convert(object value)
+        {
+            return this.Convert(value, null, null, "");
+        }
+
+        public object ConvertBack(object value)
+        {
+            return this.ConvertBack(value, null, null, "");
+        }
+
         public object ConvertBack(object value, Type type, object parameter, string language)
         {
             if (value == null) { return new Dictionary<float, float>(); }
