@@ -20,14 +20,8 @@ namespace hebestadtaCateringKingCalculator
     sealed partial class App : Application
     {
         public static string DBPath = string.Empty;
-        public string[] foodCategories = { "Antipasti",
-"Asiatisch",
-"Canapés  Brötchen Snacks",
-"Dessert",
-"Dips und Butterteller",
-"Gemüsebeilagen",
-"Griechisch",
-"Grillbuffet Extra",
+        public string[] foodCategories = { "Antipasti", "Asiatisch", "Canapés  Brötchen Snacks", "Dessert", "Dips und Butterteller",
+            "Gemüsebeilagen", "Griechisch", "Grillbuffet Extra",
 "Italienisch",
 "Kalte  Fleischplatten",
 "Mexikanisch",
@@ -71,6 +65,7 @@ namespace hebestadtaCateringKingCalculator
                     {
                         Name = foodCategory.ToString()
                     };
+
                     db.Insert(newFoodCategory);
                 }
             }   
@@ -92,7 +87,7 @@ namespace hebestadtaCateringKingCalculator
                 {
                     Name = "Schweinerückenbraten in Rahmsauce",
                     Category = "Pork",
-                    IngredientIDsWithTotalAmount = (byte[])dictionaryConverter.Convert(new Dictionary<int, int>() { {1,15}, {2,20}, {3,30}, {4, 40} }, null, null, "")
+                    IngredientIDsWithTotalAmount = (byte[])dictionaryConverter.Convert(new Dictionary<int, int>() { {1,15}, {2,20}, {3,30}, {4, 40} })
                 };
                 db.Insert(newMealItem);
 
