@@ -6,31 +6,40 @@ namespace CateringKingCalculatorTests.Converters
 {
     public abstract class ConverterTestBase
     {
+        object result;
+
         public void ConvertWithNullParameter_ShouldThrowArgumentNullException(IValueConverter converter)
         {
-            int weekOfYear = 0;
 
             try
             {
-                weekOfYear = (int)converter.Convert(null, null, null, "");
+                result = converter.Convert(null, null, null, "");
+                Assert.Fail("An exception should have been thrown");
             }
             catch (ArgumentNullException exception)
             {
                 StringAssert.Contains(exception.Message, "");
+            }
+            catch(Exception e)
+            {
+                Assert.Fail("Wrong exception  has been thrown");
             }
         }
 
         public void ConvertBackWithNullParameter_ShouldThrowArgumentNullException(IValueConverter converter)
         {
-            DateTime[] result = null;
-
             try
             {
-                result = (DateTime[])converter.ConvertBack(null, null, null, "");
+                result = converter.ConvertBack(null, null, null, "");
+                Assert.Fail("An exception should have been thrown");
             }
             catch (ArgumentNullException exception)
             {
                 StringAssert.Contains(exception.Message, "");
+            }
+            catch (Exception e)
+            {
+                Assert.Fail("The wrong exception has been thrown");
             }
         }
     }
